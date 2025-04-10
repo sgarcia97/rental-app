@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import { createClient } from '@/utils/supabase/server';
 
 
@@ -15,6 +15,24 @@ export const AuthContextProvider = async ({children}:AuthType) => {
     const [user, setUser] = useState<any>(null)
 
     const supabase = await createClient()
+
+    useEffect(()=>{
+      const getUser = async () => {
+        const supabase = await createClient()
+        try{
+        const { data, error } = await supabase.auth.getUser()
+        if(error){
+          console.log(error)
+        }else{
+          setUser(data)
+        }
+        }catch(error){
+          console.log(error)
+        }
+      }
+      getUser()
+     
+    },[user])
    
     // Sign up user for an account
     const signUp = async (formData: FormData) => {
@@ -55,7 +73,7 @@ export const AuthContextProvider = async ({children}:AuthType) => {
       }
 
     return (
-        <AuthContext.Provider value={{signUp, login}}>
+        <AuthContext.Provider value={{user, signUp, login}}>
         {children}
         </AuthContext.Provider>
     )
