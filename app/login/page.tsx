@@ -1,3 +1,4 @@
+'use client'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -5,6 +6,13 @@ import { Mail, Lock } from "lucide-react"
 import Image from "next/image"
 
 export default function LoginPage() {
+
+  const handleLogin = (e:any) => {
+    e.preventDefault()
+    alert('test')
+  }
+
+
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-1">
@@ -16,7 +24,7 @@ export default function LoginPage() {
 
             <div className="mt-10">
               <div>
-                <form action="#" method="POST" className="space-y-6">
+                <form onSubmit={handleLogin} className="space-y-6">
                   <div>
                     <div className="relative mt-2">
                       <Input
@@ -52,6 +60,8 @@ export default function LoginPage() {
                   </div>
 
                   <div className="flex items-center justify-between">
+                    <button type="submit" className="button-medium">Login</button>
+                    {/*
                     <Link href="/manager" passHref>
                       <Button asChild className="w-24 bg-blue-700 hover:bg-blue-800">
                       <span>Manager Login</span>
@@ -61,7 +71,8 @@ export default function LoginPage() {
                       <Button asChild className="w-24 bg-blue-700 hover:bg-blue-800">
                       <span>Tenant Login</span>
                       </Button>
-                    </Link>
+                    </Link>*/
+}
                     <div className="text-sm leading-6">
                       <span className="text-gray-500">or</span>
                     </div>

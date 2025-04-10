@@ -1,5 +1,4 @@
-'use server'
-import { revalidatePath } from 'next/cache'
+'use client'
 import { redirect } from 'next/navigation'
 import { createContext, useContext, useState, useEffect } from 'react'
 import { createClient } from '@/utils/supabase/server';
@@ -11,10 +10,8 @@ type AuthType = {
     children:any;
 }
 
-export const AuthContextProvider = async ({children}:AuthType) => {
+export const AuthContextProvider = ({children}:AuthType) => {
     const [user, setUser] = useState<any>(null)
-
-    const supabase = await createClient()
 
     useEffect(()=>{
       const getUser = async () => {
@@ -36,7 +33,7 @@ export const AuthContextProvider = async ({children}:AuthType) => {
    
     // Sign up user for an account
     const signUp = async (formData: FormData) => {
-      
+        const supabase = await createClient()
         const data = {
           email: formData.get('email') as string,
           password: formData.get('password') as string,
@@ -46,7 +43,7 @@ export const AuthContextProvider = async ({children}:AuthType) => {
         if (error) {
           redirect('/error')
         }
-        revalidatePath('/', 'layout')
+        //revalidatePath('/', 'layout')
         redirect('/')
       }catch(error){
         console.log('Error with sign up - ', error)
@@ -55,7 +52,7 @@ export const AuthContextProvider = async ({children}:AuthType) => {
 
     // Sign in user to account
     const login = async (formData: FormData) => {
-     
+        const supabase = await createClient()
         const data = {
           email: formData.get('email') as string,
           password: formData.get('password') as string,
@@ -65,7 +62,7 @@ export const AuthContextProvider = async ({children}:AuthType) => {
         if (error) {
           redirect('/error')
         }
-        revalidatePath('/', 'layout')
+        //revalidatePath('/', 'layout')
         redirect('/')
       }catch(error){
         console.log('Error with sign in - ', error)
@@ -81,5 +78,5 @@ export const AuthContextProvider = async ({children}:AuthType) => {
 
 
 
-export const auth = useContext(AuthContext)
+export const auth = () => { return useContext(AuthContext)}
 
