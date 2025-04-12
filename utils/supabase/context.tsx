@@ -25,8 +25,8 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
   //const [user, setUser] = useState<any>(null)
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isSession, setIsSession ] = useState<boolean>(false)
-  const router = useRouter()
+  const [isSession, setIsSession] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     let isMounted = true;
@@ -52,7 +52,8 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log("Auth state changed:", _event, "Session present?", !!session);
-     
+
+      setIsSession(!!session);
       if (isMounted) setSession(session);
       if(!!session){
         router.replace('/manager')
@@ -69,15 +70,19 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
 
   // Sign up user for an account
   const signUp = async (formData: FormData): Promise<void> => {
-
     const data = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
+      options: {
+        data: {
+          fullName: formData.get("fullName") as string,
+        },
+      },
     };
     try {
       const { error } = await supabase.auth.signUp(data);
       if (error) {
-        router.replace('/signup');
+        router.replace("/signup");
       }
       //revalidatePath('/', 'layout')
       router.replace('/signup/confirmation')
@@ -88,7 +93,6 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
 
   // Sign in user to account
   const login = async (formData: FormData): Promise<void> => {
-
     const data = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
@@ -96,6 +100,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     try {
       const { error } = await supabase.auth.signInWithPassword(data);
       if (error) {
+
         alert('Error loggin you in. Please try again')
       }
     } catch (error) {
@@ -104,7 +109,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
   };
 
   const logOut = async () => {
-    
+   
     const { error } = await supabase.auth.signOut()
     if(error){
       console.log(error.message)
@@ -112,21 +117,20 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       alert('You are logged out')
       router.replace('/login')
     }
-
-  }
+  };
 
   const value: AuthType = {
     session,
     isLoading,
     signUp,
     login,
-    logOut
+    logOut,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = ():AuthType => {
+export const useAuth = (): AuthType => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
