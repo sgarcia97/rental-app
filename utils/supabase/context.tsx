@@ -82,9 +82,8 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     try {
       const { error } = await supabase.auth.signUp(data);
       if (error) {
-        router.replace("/signup");
+       alert('An error occured'+error)
       }
-      //revalidatePath('/', 'layout')
       router.replace('/signup/confirmation')
     } catch (error) {
       console.log("Error with sign up - ", error);

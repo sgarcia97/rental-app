@@ -1,32 +1,25 @@
+'use client'
 import Link from "next/link";
+import Header from "@/components/header";
 import type { NextPage } from "next";
-
+import { addProperty } from "@/lib/services";
 const SecureHomePage: NextPage = () => {
+
+  const handleSubmit = async (e:any) => {
+    e.preventDefault()
+    const fd = new FormData(e.target)
+    try{
+    const data = await addProperty(fd)
+    console.log(data)
+    }catch(error){
+      console.log(error)
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-          {/* Logo */}
-          <div className="text-[#005377] text-2xl font-serif italic">
-            <span className="text-3xl">S</span>ecure<span className="text-3xl">H</span>ome
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center gap-6 text-sm">
-            <Link href="/saved-searches" className="text-gray-600 hover:underline">
-              Saved Searches
-            </Link>
-            <Link href="/list-property" className="text-gray-600 hover:underline">
-              List a Property
-            </Link>
-            <span className="text-gray-600">Username</span>
-            <Link href="/" className="bg-[#005377] text-white px-4 py-2 rounded text-sm">
-              Logout
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header showUsername={true} />
 
       {/* Main content */}
       <main className="flex-1 bg-gray-50">
@@ -62,7 +55,7 @@ const SecureHomePage: NextPage = () => {
           <div className="bg-white rounded-md shadow-sm p-6">
             <h2 className="text-lg font-medium text-gray-900 text-center mb-6">New Listing</h2>
 
-            <form className="max-w-2xl mx-auto space-y-6">
+            <form className="max-w-2xl mx-auto space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                   Address
@@ -78,17 +71,17 @@ const SecureHomePage: NextPage = () => {
 
               <div className="space-y-2">
                 <label htmlFor="squareFootage" className="block text-sm font-medium text-gray-700">
-                  Square Footage
+                  Description
                 </label>
                 <input
                   type="text"
                   id="squareFootage"
-                  name="squareFootage"
-                  placeholder="Enter Square Footage"
+                  name="description"
+                  placeholder="Enter Description"
                   className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
                 />
               </div>
-
+             {/*
               <div className="space-y-2">
                 <label htmlFor="monthlyRent" className="block text-sm font-medium text-gray-700">
                   Monthly Rent
@@ -101,7 +94,7 @@ const SecureHomePage: NextPage = () => {
                   className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
                 />
               </div>
-
+*/}
               <div className="text-center">
                 <button
                   type="submit"
