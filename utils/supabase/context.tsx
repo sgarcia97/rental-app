@@ -52,8 +52,13 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log("Auth state changed:", _event, "Session present?", !!session);
-      setIsSession(!!session)
+     
       if (isMounted) setSession(session);
+      if(!!session){
+        router.replace('/manager')
+      }else{
+        router.replace('/')
+      }
     });
 
     return () => {
@@ -75,7 +80,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
         router.replace('/signup');
       }
       //revalidatePath('/', 'layout')
-      redirect("/");
+      router.replace('/signup/confirmation')
     } catch (error) {
       console.log("Error with sign up - ", error);
     }
@@ -91,13 +96,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     try {
       const { error } = await supabase.auth.signInWithPassword(data);
       if (error) {
-        router.replace('/login');
-      }
-      console.log('Session state',isSession)
-      if(isSession){
-      router.replace('/manager');
-      }else{
-        router.replace('/login');
+        alert('Error loggin you in. Please try again')
       }
     } catch (error) {
       console.log("Error with sign in - ", error);
@@ -110,6 +109,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     if(error){
       console.log(error.message)
     }else{
+      alert('You are logged out')
       router.replace('/login')
     }
 
