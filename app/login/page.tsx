@@ -3,13 +3,30 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Mail, Lock } from "lucide-react"
+import { useEffect } from "react"
 import Image from "next/image"
+import { useAuth } from "@/utils/supabase/context"
+import { redirect, useRouter } from "next/navigation"
+
 
 export default function LoginPage() {
+  const { login, session } = useAuth()
+  const router = useRouter()
 
-  const handleLogin = (e:any) => {
+  useEffect(()=>{
+    if(session){ router.replace('/manager')}
+  },[])
+  const handleLogin = async (e:any) => {
     e.preventDefault()
-    alert('test')
+    const formData = new FormData(e.target)
+    try{
+      await login(formData)
+      console.log(session)
+      //alert('success')
+      //router.replace('/manager')
+    }catch(error){
+      alert(error)
+    }
   }
 
 

@@ -1,11 +1,16 @@
+'use client'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-
+import { useAuth } from "@/utils/supabase/context"
 interface HeaderProps {
   showUsername?: boolean
 }
 
 export default function Header({ showUsername = false }: HeaderProps) {
+  const { logOut, session } = useAuth()
+  const handleLogout = async () => {
+    await logOut()
+  }
   return (
     <header className="bg-white border-b border-gray-200">
       <div className="container mx-auto px-4 py-4">
@@ -22,17 +27,15 @@ export default function Header({ showUsername = false }: HeaderProps) {
             <Link href="/list-property" className="text-sm text-gray-700 hover:text-blue-700">
               List a property
             </Link>
-            {showUsername ? (
+            {session?.user.email ? (
               <div className="flex items-center">
                 <span className="text-sm text-gray-700 mr-2">Username</span>
                 <Link href="/">
-                  <Button
-                  variant="outline"
-                  size="sm"
+                  <button onClick={handleLogout}
                   className="h-8 bg-blue-700 text-white hover:bg-blue-800 border-blue-700"
                   >
                   Log out
-                  </Button>
+                  </button>
                 </Link>
               </div>
             ) : (

@@ -1,3 +1,4 @@
+'use client'
 // import React from 'react';
  
 // const SignUp: React.FC = () => {
@@ -67,8 +68,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { User, Mail, Lock, Key } from "lucide-react";
 import Image from "next/image";
+import { useAuth } from '@/utils/supabase/context';
 
 const SignUp: React.FC = () => {
+  const { signUp } = useAuth()
+  const handleSubmit = async (e:any) => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    try{
+      await signUp(formData)
+      //alert('Success')
+    }catch(error){
+      alert(error)
+    }
+  }
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-1">
@@ -80,7 +93,7 @@ const SignUp: React.FC = () => {
 
             <div className="mt-10">
               <div>
-                <form action="#" method="POST" className="space-y-6">
+                <form onSubmit={handleSubmit} method="POST" className="space-y-6">
                   <div>
                     <div className="relative mt-2">
                       <Input
@@ -150,9 +163,7 @@ const SignUp: React.FC = () => {
                   </div>
 
                   <div>
-                    <Button type="submit" className="w-full bg-blue-700 hover:bg-blue-800">
-                      Sign Up
-                    </Button>
+                    <button type="submit" className="button-medium">Sign Up</button>
                   </div>
 
                   <div className="flex items-center justify-between">

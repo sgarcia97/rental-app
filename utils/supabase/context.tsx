@@ -1,5 +1,5 @@
 "use client";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { createContext, useContext, useState, useEffect } from "react";
 //import { createClient } from '@/utils/supabase/server';
 import { supabase } from "./client";
@@ -12,6 +12,7 @@ interface AuthType {
   isLoading: boolean;
   signUp: (data: FormData) => Promise<void>;
   login: (data: FormData) => Promise<void>;
+  logOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthType | undefined>(undefined);
@@ -24,6 +25,8 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
   //const [user, setUser] = useState<any>(null)
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSession, setIsSession ] = useState<boolean>(false)
+  const router = useRouter()
 
   useEffect(() => {
     let isMounted = true;
@@ -49,6 +52,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log("Auth state changed:", _event, "Session present?", !!session);
+      setIsSession(!!session)
       if (isMounted) setSession(session);
     });
 
@@ -60,7 +64,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
 
   // Sign up user for an account
   const signUp = async (formData: FormData): Promise<void> => {
-    //const supabase = await createClient()
+
     const data = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
@@ -68,7 +72,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     try {
       const { error } = await supabase.auth.signUp(data);
       if (error) {
-        redirect("/error");
+        router.replace('/signup');
       }
       //revalidatePath('/', 'layout')
       redirect("/");
@@ -79,7 +83,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
 
   // Sign in user to account
   const login = async (formData: FormData): Promise<void> => {
-    //const supabase = await createClient()
+
     const data = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
@@ -87,25 +91,43 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     try {
       const { error } = await supabase.auth.signInWithPassword(data);
       if (error) {
-        redirect("/error");
+        router.replace('/login');
       }
-      //revalidatePath('/', 'layout')
-      redirect("/");
+      console.log('Session state',isSession)
+      if(isSession){
+      router.replace('/manager');
+      }else{
+        router.replace('/login');
+      }
     } catch (error) {
       console.log("Error with sign in - ", error);
     }
   };
+
+  const logOut = async () => {
+    
+    const { error } = await supabase.auth.signOut()
+    if(error){
+      console.log(error.message)
+    }else{
+      router.replace('/login')
+    }
+
+  }
 
   const value: AuthType = {
     session,
     isLoading,
     signUp,
     login,
+    logOut
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
+export const useAuth = ():AuthType => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  return context;
 };

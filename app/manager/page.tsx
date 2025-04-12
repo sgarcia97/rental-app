@@ -1,10 +1,14 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import Navigation from "@/components/navigation"
 import { PenSquare } from "lucide-react"
+import { useAuth } from "@/utils/supabase/context"
 
 export default function ListingsPage() {
+  const { session } = useAuth()
+  console.log(session)
   const listings = [
     { address: "33 19 Ave SW", date: "11/05/2025", description: "Beautiful 2 story townhouse..." },
     { address: "56 8 Ave NW", date: "11/04/2025", description: "Beautiful 2 story townhouse..." },
@@ -18,6 +22,7 @@ export default function ListingsPage() {
       <Header showUsername={true} />
 
       <main className="flex-1 bg-gray-50">
+        <div>Welcome {session?.user.email}</div>
         <div className="container mx-auto px-4 py-6">
           <Navigation />
 
