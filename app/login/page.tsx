@@ -1,10 +1,35 @@
+'use client'
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Mail, Lock } from "lucide-react"
+import { useEffect } from "react"
 import Image from "next/image"
+import { useAuth } from "@/utils/supabase/context"
+import { redirect, useRouter } from "next/navigation"
+
 
 export default function LoginPage() {
+  const { login, session } = useAuth()
+  const router = useRouter()
+
+  useEffect(()=>{
+    if(session){ router.replace('/manager')}
+  },[])
+  const handleLogin = async (e:any) => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    try{
+      await login(formData)
+      console.log(session)
+      //alert('success')
+      //router.replace('/manager')
+    }catch(error){
+      alert(error)
+    }
+  }
+
+
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-1">
@@ -16,7 +41,7 @@ export default function LoginPage() {
 
             <div className="mt-10">
               <div>
-                <form action="#" method="POST" className="space-y-6">
+                <form onSubmit={handleLogin} className="space-y-6">
                   <div>
                     <div className="relative mt-2">
                       <Input
@@ -52,6 +77,8 @@ export default function LoginPage() {
                   </div>
 
                   <div className="flex items-center justify-between">
+                    <button type="submit" className="button-medium">Login</button>
+                    {/*
                     <Link href="/manager" passHref>
                       <Button asChild className="w-24 bg-blue-700 hover:bg-blue-800">
                       <span>Manager Login</span>
@@ -61,7 +88,8 @@ export default function LoginPage() {
                       <Button asChild className="w-24 bg-blue-700 hover:bg-blue-800">
                       <span>Tenant Login</span>
                       </Button>
-                    </Link>
+                    </Link>*/
+}
                     <div className="text-sm leading-6">
                       <span className="text-gray-500">or</span>
                     </div>
