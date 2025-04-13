@@ -1,16 +1,24 @@
-import { addContract, getProperties, updateContract} from "@/lib/services"
+import { addContract, getContract, getProperties, updateContract} from "@/lib/services"
 import { useAuth } from "@/utils/supabase/context"
 import { useState, useEffect } from 'react'
+import moment from "moment"
 
 type ContractFormType = {
-  id?:string;
+  id?:any;
 }
 
-const ContractForm = ({id=""}:ContractFormType) => {
+const ContractForm = ({id=null}:ContractFormType) => {
     const { session } = useAuth()
+    const [data, setData] = useState<any>(null)
     const [propertyList, setPropertyList] = useState<any>(null)
     useEffect(()=>{
+      
         getProperties().then(d => setPropertyList(d))
+
+        if(id){
+          getContract(id).then(d => setData(d))
+    
+        }
     },[])
 
     const handleSubmit = async (e:any) => {
@@ -46,9 +54,13 @@ const ContractForm = ({id=""}:ContractFormType) => {
             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
           >
             {
-              propertyList && propertyList.map((property:any, i:number) => (
-                <option key={i} value={property.property_id}>{property.address}</option>
-              ))
+              propertyList && propertyList.map((property:any, i:number) => {
+                let sel:boolean = false
+                if(id == property.property_id){
+                  sel = true
+                }
+                return <option key={i} value={property.property_id} selected={sel}>{property.address}</option>
+})
             }
             </select>
         </div>
@@ -60,6 +72,7 @@ const ContractForm = ({id=""}:ContractFormType) => {
           <input
             type="number"
             name="rent_amount"
+            defaultValue={data && data[0].rent_amount}
             placeholder="Rent Amount"
             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
           />
@@ -73,6 +86,7 @@ const ContractForm = ({id=""}:ContractFormType) => {
             type="number"
             name="deposit_amount"
             placeholder="Deposit"
+            defaultValue={data && data[0].deposit_amount}
             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
           />
         </div>
@@ -85,6 +99,7 @@ const ContractForm = ({id=""}:ContractFormType) => {
             type="number"
             name="late_fee"
             placeholder="Late fee"
+            defaultValue={data && data[0].late_fee}
             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
           />
         </div>
@@ -98,6 +113,7 @@ const ContractForm = ({id=""}:ContractFormType) => {
    
             name="rent_due_date"
             placeholder="Rent due date"
+            defaultValue={data && moment(data[0].rent_due_date).format('YYYY-MM-DD')}
             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
           />
         </div>
@@ -110,6 +126,7 @@ const ContractForm = ({id=""}:ContractFormType) => {
             type="number"
             name="rent_interval"
             placeholder="Rent interval"
+            defaultValue={data && data[0].rent_interval}
             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
           />
         </div>

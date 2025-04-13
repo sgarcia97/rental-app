@@ -1,4 +1,5 @@
 'use client'
+import { redirect } from "next/navigation"
 import TemplateManager from "@/components/template-manager"
 import Image from "next/image"
 import Edit from '@/public/file-edit.svg'
@@ -8,13 +9,17 @@ import { useState, useEffect} from 'react'
 import moment from 'moment'
 import ListingForm from "@/components/listingForm"
 
+
 export default function ListingsPage() {
+  const { session } = useAuth()
+if(session){ redirect('/')}
   const [data, setData] = useState<any>(null)
   const [isForm, setIsForm] = useState(false)
   const [id, setId] = useState<any>("")
 
   useEffect(()=>{
     getProperties().then(d => setData(d))
+    console.log(session)
   },[])
 
   const handleListing = (id:string) => {

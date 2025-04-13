@@ -13,12 +13,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    
+    <>
     <html lang="en">
       <body>
         <AuthContextProvider>{children}</AuthContextProvider>
       </body>
     </html>
-    
+    </>
   )
 }

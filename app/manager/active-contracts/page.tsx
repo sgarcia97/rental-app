@@ -12,10 +12,16 @@ const ActiveListingsPage: NextPage = () => {
   
    const [data, setData] = useState<any>(null)
    const [isForm, setIsForm] = useState(false)
-   
+   const [idd, setIdd] = useState<any>("")
+
     useEffect(()=>{
       getContracts().then(d => setData(d))
     },[])
+
+    const handleContract = (id:string) => {
+      setIdd(id)
+      setIsForm(!isForm)
+    }
 
   return (
    <TemplateManager>
@@ -25,7 +31,7 @@ const ActiveListingsPage: NextPage = () => {
               <h2 className="text-sm font-medium">Contracts - {data && data.length} contract(s)</h2>
               <button onClick={()=>{setIsForm(!isForm)}} className="button-small" >{isForm ? 'Cancel contract' : 'Create contract'}</button>
             </div>
-        { isForm ? <ContractForm/> :
+        { isForm ? <ContractForm id={idd}/> :
             <table className="table">
               <thead>
                 <tr>
@@ -56,7 +62,7 @@ const ActiveListingsPage: NextPage = () => {
                     <td>{listing.rent_interval}</td>
                     <td>{listing.status}</td>
                     <td>
-                      <button className="edit-button"><Image src={Edit} alt=""/></button>
+                      <button onClick={()=>handleContract(listing.property_id)}className="edit-button"><Image src={Edit} alt=""/></button>
                     </td>
                   </tr>
                 ))}
