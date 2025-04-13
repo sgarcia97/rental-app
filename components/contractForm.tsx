@@ -1,18 +1,35 @@
-import { addContract, getProperties} from "@/lib/services"
+import { addContract, getProperties, updateContract} from "@/lib/services"
 import { useAuth } from "@/utils/supabase/context"
 import { useState, useEffect } from 'react'
 
-const ContractForm = () => {
+type ContractFormType = {
+  id?:string;
+}
+
+const ContractForm = ({id=""}:ContractFormType) => {
     const { session } = useAuth()
     const [propertyList, setPropertyList] = useState<any>(null)
     useEffect(()=>{
         getProperties().then(d => setPropertyList(d))
     },[])
+
     const handleSubmit = async (e:any) => {
-        e.preventDefault()
-        const fd = new FormData(e.target)
-        const data = await addContract(fd)
-    }
+            e.preventDefault()
+            const updates:any = {}
+            const fd = new FormData(e.target)
+            for(const [key, value] of fd.entries())
+            {
+              updates[key] = value
+            }
+         
+            if(id){
+              const update = await updateContract(updates,id)
+            }else{
+            const data = await addContract(updates)
+            e.target.reset()
+            }
+            
+        }
 
     return (
       <div className="bg-white rounded-md shadow-sm p-6">
@@ -54,7 +71,7 @@ const ContractForm = () => {
           </label>
           <input
             type="number"
-            name="deposit"
+            name="deposit_amount"
             placeholder="Deposit"
             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
           />
@@ -101,12 +118,14 @@ const ContractForm = () => {
           <label className="block text-sm font-medium text-gray-700">
             Status
           </label>
-          <input
-            type="text"
+          <select
             name="status"
-            placeholder="Status"
             className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
-          />
+          >
+            <option value="Pending">Pending</option>
+            <option value="Active">Active</option>
+            <option value="Expired">Expired</option>
+            </select>
         </div>
 
         <div className="text-center">

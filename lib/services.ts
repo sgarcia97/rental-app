@@ -19,13 +19,29 @@ export const getProperties = async () => {
         
 }
 
-export const addProperty = async (fd: FormData) => {
+export const getProperty = async (id:string) => {
+    try{
+        const { data: properties, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('property_id',id)
+        if(error){
+            console.log(error)
+            return
+        }
+        return properties
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
+export const addProperty = async (fd: any) => {
     
     const { data, error } = await supabase
     .from('properties')
-    .insert([
-    { address: fd.get('address'), description: fd.get('description') },
-    ])
+    .insert([fd])
     .select()
 
     if(error){
@@ -40,19 +56,20 @@ export const addProperty = async (fd: FormData) => {
         
 }
 
-export const updateProperty = async (fd: FormData) => {
-    
+export const updateProperty = async (updates:any,id:string) => {
+   
     const { data, error } = await supabase
     .from('properties')
-    .update({ other_column: 'otherValue' })
-    .eq('id', fd.get('id'))
+    .update(updates)
+    .eq('property_id', id)
     .select()
-
     if(error){
-        console.log(error)
-        alert('Error adding listing')
+        console.log(error.message)
+        alert('Error updating listing')
+    }else{
+        alert('Successfully updated')
     }
-    return data
+    
         
         
 }
@@ -76,29 +93,71 @@ export const getContracts = async () => {
         
 }
 
-export const addContract = async (fd: FormData) => {
+export const getContract = async (id:string) => {
+    try{
+        const { data: rentals, error } = await supabase
+        .from('rentals')
+        .select('*')
+        .eq('property_id',id)
+        if(error){
+            console.log(error)
+            return
+        }
+        return rentals
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
+export const updateContract = async (updates:any,id:string) => {
+   
+    const { data, error } = await supabase
+    .from('rentals')
+    .update(updates)
+    .eq('property_id', id)
+    if(error){
+        console.log(error.message)
+        alert('Error updating contract')
+    }else{
+        alert('Successfully updated contract')
+    }
+    
+        
+        
+}
+
+export const getExpiredContracts = async (id='') => {
+    try{
+        const { data: rentals, error } = await supabase
+        .from('rentals')
+        .select('*')
+        .eq('status','Expired')
+        if(error){
+            console.log(error)
+            return
+        }
+        return rentals
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
+export const addContract = async (fd:any) => {
     
     const { data, error } = await supabase
     .from('rentals')
-    .insert([
-    { 
-      property_id: fd.get('property_id'),
-      rent_amount: fd.get('rent_amount'), 
-      deposit_amount: fd.get('deposit'), 
-      late_fee: fd.get('late_fee'),
-      rent_due_date: fd.get('rent_due_date'),
-      rent_interval: fd.get('rent_interval'),
-      status: fd.get('status')
-
-    },
-    ])
+    .insert([fd])
     .select()
 
     if(error){
         console.log(error)
         alert('Error adding listing'+error.message)
     }else{
-        return data
+        alert('Contract added for '+data)
     }
     
         
@@ -148,3 +207,9 @@ export const addDispute = async (fd: FormData) => {
     
         
 }
+
+
+export const caDollar = new Intl.NumberFormat('en-CA', {
+    style: 'currency',
+    currency: 'CAD',
+});

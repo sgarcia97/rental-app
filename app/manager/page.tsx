@@ -1,7 +1,7 @@
 'use client'
 import TemplateManager from "@/components/template-manager"
-import { Button } from "@/components/ui/button"
-import { PenSquare } from "lucide-react"
+import Image from "next/image"
+import Edit from '@/public/file-edit.svg'
 import { useAuth } from "@/utils/supabase/context"
 import { getProperties } from "@/lib/services"
 import { useState, useEffect} from 'react'
@@ -11,19 +11,26 @@ import ListingForm from "@/components/listingForm"
 export default function ListingsPage() {
   const [data, setData] = useState<any>(null)
   const [isForm, setIsForm] = useState(false)
+  const [id, setId] = useState<any>("")
 
   useEffect(()=>{
     getProperties().then(d => setData(d))
   },[])
 
+  const handleListing = (id:string) => {
+    //alert(id)
+    setId(id)
+    setIsForm(!isForm)
+  }
+
   return (
     <TemplateManager>
           <div className="bg-white rounded-md shadow-sm mt-6">
           <div className="table-header">
-              <h2 className="text-sm font-medium">Contracts ({data && data.length} contracts)</h2>
+              <h2 className="text-sm font-medium">Contracts - {data && data.length} listing(s)</h2>
               <button onClick={()=>{setIsForm(!isForm)}} className="button-small" >{isForm ? 'Cancel listing' : 'Create listing'}</button>
             </div>
-{ isForm ? <ListingForm/> :
+{ isForm ? <ListingForm id={id}/> :
 
             <table className="table">
               <thead className="bg-gray-50">
@@ -43,12 +50,10 @@ export default function ListingsPage() {
                   </tr> : data.map((listing:any, index:number) => (
                   <tr key={index}>
                     <td>{listing.address}</td>
-                    <td>{moment(listing.created_at).format('MMM D YY')}</td>
+                    <td>{moment(listing.created_at).format('MMM-D-YYYY')}</td>
                     <td>{listing.description}</td>
                     <td>
-                      <Button variant="ghost" size="sm">
-                        <PenSquare className="h-4 w-4" />
-                      </Button>
+                    <button onClick={() => handleListing(listing.property_id)} className="edit-button"><Image alt="edit" src={Edit}/></button>
                     </td>
                   </tr>
                 ))}

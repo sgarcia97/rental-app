@@ -2,7 +2,11 @@ import { addDispute, getProperties} from "@/lib/services"
 import { useAuth } from "@/utils/supabase/context"
 import { useState, useEffect } from 'react'
 
-const DisputeForm = () => {
+type DisputeFormType = {
+    id?:string;
+  }
+
+const DisputeForm = ({id=""}:DisputeFormType) => {
     const { session } = useAuth()
     const [propertyList, setPropertyList] = useState<any>(null)
     useEffect(()=>{
