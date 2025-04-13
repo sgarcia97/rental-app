@@ -1,6 +1,21 @@
+'use client'
 import TemplateManager from "@/components/template-manager"
+import { getDisputes } from "@/lib/services"
+import { useState, useEffect } from 'react'
+import DisputeForm from "@/components/disputeForm"
 
 export default function InboxPage() {
+  const [data, setData] = useState<any>(null)
+  const [isForm, setIsForm] = useState(false)
+
+  useEffect(()=>{
+    getDisputes().then(d => setData(d))
+
+  },[])
+
+  const handleInbox = () => {
+
+  }
   const messages = [
     { name: "Michael Katsap", date: "11/05/2025", message: "Hi, I have an inquiry about....." },
     { name: "Jane Doe", date: "11/04/2025", message: "Hi, I have an inquiry about....." },
@@ -13,10 +28,11 @@ export default function InboxPage() {
      <TemplateManager>
 
           <div className="bg-white rounded-md shadow-sm mt-6">
-            <div className="p-4 border-b">
-              <h2 className="text-sm font-medium">Inbox (4 messages)</h2>
+            <div className="table-header">
+              <h2 className="text-sm font-medium">Inbox ({data && data.length} messages)</h2>
+              <button onClick={()=>{setIsForm(!isForm)}} className="button-small" >{isForm ? 'Cancel message' : 'Create message'}</button>
             </div>
-
+{ isForm ? <DisputeForm/> :
             <table className="table">
               <thead>
                 <tr>
@@ -26,19 +42,20 @@ export default function InboxPage() {
                 </tr>
               </thead>
               <tbody>
-                {!messages ? <tr>
+                {!data ? <tr>
                   <td><div className="table-loader"></div></td>
                   <td><div className="table-loader"></div></td>
                   <td><div className="table-loader"></div></td>
-                  </tr> : messages.map((message, index) => (
+                  </tr> : data.map((message:any, index:number) => (
                   <tr key={index}>
-                    <td>{message.name}</td>
-                    <td>{message.date}</td>
-                    <td>{message.message}</td>
+                    <td>{message.property_id}</td>
+                    <td>{message.description}</td>
+                    <td>{message.resolved}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+}
           </div>
        </TemplateManager>
   )

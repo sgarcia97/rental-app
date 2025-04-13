@@ -18,15 +18,6 @@ export default function Navigation() {
               <Link href="/manager/expired-contracts" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/expired-contracts" && 'border-b-2 border-[#005377]'}`}>
                 Expired Contracts
               </Link>
-              <Link href="/manager/create-contract" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/create-contract" && 'border-b-2 border-[#005377]'}`}>
-                Create New Contract
-              </Link>
-              <Link
-                href="/manager/add-listing"
-                className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/add-listing" && 'border-b-2 border-[#005377]'}`}
-              >
-                Add New Listing
-              </Link>
             </div>
           </div>
   )

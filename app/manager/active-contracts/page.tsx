@@ -4,6 +4,7 @@ import type { NextPage } from "next";
 import TemplateManager from "@/components/template-manager";
 import { useState, useEffect } from "react";
 import { getContracts } from "@/lib/services";
+import ContractForm from "@/components/contractForm";
 
 interface Listing {
   address: string;
@@ -14,49 +15,22 @@ interface Listing {
 const ActiveListingsPage: NextPage = () => {
   
    const [data, setData] = useState<any>(null)
-
+   const [isForm, setIsForm] = useState(false)
   
     useEffect(()=>{
       getContracts().then(d => setData(d))
     },[])
-
-  const listings: Listing[] = [
-    {
-      address: "33 19 Ave SW",
-      dateListed: "11/05/2025",
-      description: "Beautiful 2 story townhouse....",
-    },
-    {
-      address: "56 8 Ave NW",
-      dateListed: "11/04/2025",
-      description: "Beautiful 2 story townhouse....",
-    },
-    {
-      address: "112 Marlbrough rd NE",
-      dateListed: "2/01/2025",
-      description: "Newly built Condo with 2 bedr...",
-    },
-    {
-      address: "50 Rocky Ridge NW",
-      dateListed: "20/12/2024",
-      description: "Beautiful 2 story townhouse....",
-    },
-    {
-      address: "26 Evanston Drive SE",
-      dateListed: "10/12/2024",
-      description: "Newly built Condo with 2 bedr...",
-    },
-  ];
 
   return (
    <TemplateManager>
 
           {/* Listings content */}
           <div className="bg-white rounded-md shadow-sm">
-            <div className="p-4 border-b">
-              <h2 className="text-sm font-medium">Active Listings ({listings.length} Listings)</h2>
+          <div className="table-header">
+              <h2 className="text-sm font-medium">Contracts ({data && data.length} contracts)</h2>
+              <button onClick={()=>{setIsForm(!isForm)}} className="button-small" >{isForm ? 'Cancel contract' : 'Create contract'}</button>
             </div>
-
+{ isForm ? <ContractForm/> :
             <table className="table">
               <thead>
                 <tr>
@@ -73,12 +47,10 @@ const ActiveListingsPage: NextPage = () => {
                   <td><div className="table-loader"></div></td>
                   <td><div className="table-loader"></div></td>
                   </tr> : data.map((listing:any, index:number) => (
-                  <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                    <td>
-                      {listing.address}
-                    </td>
-                    <td>{listing.created_at}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{listing.description}</td>
+                  <tr key={index} >
+                    <td>{listing.rent_amount}</td>
+                    <td>{listing.deposit_amount}</td>
+                    <td>{listing.late_fee}</td>
                     <td>
                       <button className="text-[#005377]">
                         <svg
@@ -101,6 +73,7 @@ const ActiveListingsPage: NextPage = () => {
                 ))}
               </tbody>
             </table>
+}
           </div>
        </TemplateManager>
   );

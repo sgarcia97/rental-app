@@ -98,12 +98,14 @@ body {
 
 .button-small{
   padding-block:5px;
-  padding-inline:10px;
-  border:none;
+  padding-inline:15px;
+  border:none
+  ;
   background-color:#0e5a8a;
   color:#ffffff;
-  border-radius: 10px;
+  border-radius: 50px;
   font-weight:600;
+  font-size:var(--small)
 }
 
 .button-medium{
@@ -161,6 +163,13 @@ body {
 
 .table tr:nth-child(even){
   background-color:#f9fafb;
+}
+
+.table-header{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:20px;
 }
 
 .table-loader{
