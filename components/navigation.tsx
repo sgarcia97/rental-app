@@ -1,26 +1,33 @@
+'use client'
 import Link from "next/link"
-
+import { usePathname } from "next/navigation"
 export default function Navigation() {
+  const pn = usePathname()
   return (
-    <nav className="flex space-x-6 border-b pb-4">
-      <Link href="/inbox" className="text-sm font-medium text-gray-700 hover:text-blue-700">
-        Inbox
-      </Link>
-      <Link href="/listings" className="text-sm font-medium text-gray-700 hover:text-blue-700">
-        Active Listings
-      </Link>
-      <Link href="/manager/active-contracts" className="text-sm font-medium text-gray-700 hover:text-blue-700">
-        Active Contracts
-      </Link>
-      <Link href="/manager/expired-contracts" className="text-sm font-medium text-gray-700 hover:text-blue-700">
-        Expired Contracts
-      </Link>
-      <Link href="/manager/create-contract" className="text-sm font-medium text-gray-700 hover:text-blue-700">
-        Create new Contract
-      </Link>
-      <Link href="/manager/add-listing" className="text-sm font-medium text-gray-700 hover:text-blue-700">
-        Add new Listing
-      </Link>
-    </nav>
+    <div className="bg-white rounded-md shadow-sm mb-6">
+            <div className="flex border-b">
+              <Link href="/manager/inbox" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/inbox" && 'border-b-2 border-[#005377]'}`}>
+                Inbox
+              </Link>
+              <Link href="/manager" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager" && 'border-b-2 border-[#005377]'}`}>
+                Active Listings
+              </Link>
+              <Link href="/manager/active-contracts" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/active-contracts" && 'border-b-2 border-[#005377]'}`}>
+                Active Contracts
+              </Link>
+              <Link href="/manager/expired-contracts" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/expired-contracts" && 'border-b-2 border-[#005377]'}`}>
+                Expired Contracts
+              </Link>
+              <Link href="/manager/create-contract" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/create-contract" && 'border-b-2 border-[#005377]'}`}>
+                Create New Contract
+              </Link>
+              <Link
+                href="/manager/add-listing"
+                className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/add-listing" && 'border-b-2 border-[#005377]'}`}
+              >
+                Add New Listing
+              </Link>
+            </div>
+          </div>
   )
 }

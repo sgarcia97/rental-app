@@ -1,9 +1,7 @@
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import TenantNavigation from "@/components/tenant-navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { ArrowDown, ArrowUp, Repeat, MoreVertical } from "lucide-react"
+import TemplateTenant from "@/components/template-tenant"
 
 export default function DigitalWalletPage() {
   const transactions = [
@@ -24,12 +22,7 @@ export default function DigitalWalletPage() {
   ]
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header showUsername={true} />
-
-      <main className="flex-1 bg-gray-50">
-        <div className="container mx-auto px-4 py-6">
-          <TenantNavigation activeTab="digital-wallet" />
+   <TemplateTenant>
 
           <div className="bg-white rounded-md shadow-sm mt-6">
             <div className="p-6 max-w-3xl mx-auto">
@@ -136,10 +129,6 @@ export default function DigitalWalletPage() {
               </div>
             </div>
           </div>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+          </TemplateTenant>
   )
 }

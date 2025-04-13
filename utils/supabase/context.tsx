@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       setIsSession(!!session);
       if (isMounted) setSession(session);
       if(!!session){
-        router.replace('/manager')
+        //router.replace('/manager')
       }else{
         router.replace('/')
       }
