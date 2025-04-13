@@ -51,7 +51,7 @@ export default function Header({ showUsername = false }: HeaderProps) {
                 </Link>
               </div>
             ) : (
-              <button onClick={()=>router.push('/login')} className="button-small">Logout</button>
+              <button onClick={()=>router.push('/login')} className="button-small">Login</button>
             )}
   
           </div>

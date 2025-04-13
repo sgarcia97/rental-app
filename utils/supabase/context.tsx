@@ -58,7 +58,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       if(!!session){
         //router.replace('/manager')
       }else{
-        router.replace('/')
+        //router.replace('/')
       }
     });
 
@@ -101,7 +101,10 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       if (error) {
 
         alert('Error loggin you in. Please try again')
+      }else{
+        router.push('/manager')
       }
+      
     } catch (error) {
       console.log("Error with sign in - ", error);
     }
