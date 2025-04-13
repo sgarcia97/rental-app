@@ -1,4 +1,4 @@
-import TemplateManager from "@/components/template-manager"
+import TemplateTenant from "@/components/template-tenant"
 
 export default function InboxPage() {
   const messages = [
@@ -10,7 +10,7 @@ export default function InboxPage() {
   ]
 
   return (
-     <TemplateManager>
+     <TemplateTenant>
 
           <div className="bg-white rounded-md shadow-sm mt-6">
             <div className="p-4 border-b">
@@ -40,6 +40,6 @@ export default function InboxPage() {
               </tbody>
             </table>
           </div>
-       </TemplateManager>
+       </TemplateTenant>
   )
 }

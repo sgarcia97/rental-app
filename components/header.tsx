@@ -30,10 +30,10 @@ export default function Header({ showUsername = false }: HeaderProps) {
 
           {/* Navigation */}
           <div className="flex items-center gap-6 text-sm">
-            <Link href="/saved-searches" className="text-gray-600 hover:underline">
+            <Link href="#" className="text-gray-600 hover:underline">
               Saved Searches
             </Link>
-            <Link href="/list-property" className="text-gray-600 hover:underline">
+            <Link href="#" className="text-gray-600 hover:underline">
               List a Property
             </Link>
             {session?.user.email ? (
