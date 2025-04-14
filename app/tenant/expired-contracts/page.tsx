@@ -1,73 +1,80 @@
-import Link from "next/link";
+'use client'
 import type { NextPage } from "next";
-import TenantNavigation from "@/components/tenant-navigation"
-
+import { getExpiredContracts } from "@/lib/services";
+import TemplateTenant from "@/components/template-tenant";
+import { useState, useEffect } from 'react'
+import { useAuth } from "@/utils/supabase/context";
 
 const SecureHomePage: NextPage = () => {
+  const { session } = useAuth()
+  const [data, setData] = useState<any>(null)
+
+  useEffect(()=>{
+    getExpiredContracts(session?.user.id).then(d => setData(d))
+  })
+
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-          {/* Logo */}
-          <div className="text-[#005377] text-2xl font-serif italic">
-            <span className="text-3xl">S</span>ecure<span className="text-3xl">H</span>ome
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center gap-6 text-sm">
-            <Link href="/saved-searches" className="text-gray-600 hover:underline">
-              Saved Searches
-            </Link>
-            <Link href="/list-property" className="text-gray-600 hover:underline">
-              List a Property
-            </Link>
-            <span className="text-gray-600">Username</span>
-            <Link href="/" className="bg-[#005377] text-white px-4 py-2 rounded text-sm">
-              Logout
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* Main content */}
-      <main className="flex-1 bg-gray-50">
-        <div className="container mx-auto px-4 py-6">
-          {/* Tabs (Navigation) */}
-          <div className="bg-white rounded-md shadow-sm mb-6">
-            <div className="flex border-b">
-            <TenantNavigation activeTab="expired-contracts" />
-              
+    <TemplateTenant>
+        
+        <div className="bg-white rounded-md shadow-sm">
+          <div className="table-header">
+              <h2 className="text-sm font-medium">Contracts ({data && data.length} contracts)</h2>
+             
             </div>
+
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Rent</th>
+                  <th>Deposit</th>
+                  <th>Late Fee</th>
+                  <th>Due Date</th>
+                  <th>interval</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {!data ? <tr>
+                  <td><div className="table-loader"></div></td>
+                  <td><div className="table-loader"></div></td>
+                  <td><div className="table-loader"></div></td>
+                  <td><div className="table-loader"></div></td>
+                  <td><div className="table-loader"></div></td>
+                  <td><div className="table-loader"></div></td>
+                  <td><div className="table-loader"></div></td>
+                  </tr> : data.map((listing:any, index:number) => (
+                  <tr key={index} >
+                    <td>{listing.rent_amount}</td>
+                    <td>{listing.deposit_amount}</td>
+                    <td>{listing.late_fee}</td>
+                    <td>{listing.rent_due_date}</td>
+                    <td>{listing.rent_interval}</td>
+                    <td>{listing.status}</td>
+                    <td>
+                      <button className="text-[#005377]">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-
-          {/* Form content */}
-          <div className="bg-white rounded-md shadow-sm p-6">
-            <h2 className="text-lg font-medium text-gray-900 text-center mb-6">There are no expired contracts.</h2>
-
-            
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-[#005377] text-white py-6">
-        <div className="container mx-auto px-4 flex justify-center gap-6 text-sm border-t border-white/20 pt-4">
-          <Link href="/about" className="hover:underline">
-            About Us
-          </Link>
-          <Link href="/contact" className="hover:underline">
-            Contact Us
-          </Link>
-          <Link href="/privacy" className="hover:underline">
-            Privacy
-          </Link>
-          <Link href="/terms" className="hover:underline">
-            Terms
-          </Link>
-        </div>
-      </footer>
-    </div>
+    </TemplateTenant>
   );
 };
 

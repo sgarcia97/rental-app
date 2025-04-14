@@ -1,16 +1,13 @@
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import TenantNavigation from "@/components/tenant-navigation"
+import TemplateTenant from "@/components/template-tenant"
 import Image from "next/image"
+import { useAuth } from "@/utils/supabase/context";
+import { redirect } from 'next/navigation'
 
 export default function PayRentPage() {
+  const { session } = useAuth()
+  if(!session){ redirect('/')}
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header showUsername={true} />
-
-      <main className="flex-1 bg-gray-50">
-        <div className="container mx-auto px-4 py-6">
-          <TenantNavigation />
+    <TemplateTenant>
 
           <div className="bg-white rounded-md shadow-sm mt-6 p-6">
             <h2 className="text-lg font-medium mb-6">Pay Rent (June 2023)</h2>
@@ -50,10 +47,6 @@ export default function PayRentPage() {
               </div>
             </div>
           </div>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+    </TemplateTenant>
   )
 }

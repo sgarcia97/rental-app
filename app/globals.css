@@ -47,6 +47,9 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --normal:1rem;
+    --small:0.8rem;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -93,6 +96,18 @@ body {
   }
 }
 
+.button-small{
+  padding-block:5px;
+  padding-inline:15px;
+  border:none
+  ;
+  background-color:#0e5a8a;
+  color:#ffffff;
+  border-radius: 50px;
+  font-weight:600;
+  font-size:var(--small)
+}
+
 .button-medium{
   padding-block:10px;
   padding-inline:20px;
@@ -104,7 +119,123 @@ body {
   font-weight:600;
 }
 
-.button-medium:hover{
+
+
+.button-medium:hover, .button-small:hover{
 
 }
+
+.header{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:20px;
+  box-shadow: 0px 1px 5px 0px rgba(50,50,50,0.1);
+}
+
+.confirmation{
+  max-width:600px;
+  position:relative;
+  margin:auto;
+  padding:50px;
+  text-align: center;
+  display:flex;
+  flex-flow:column nowrap;
+  align-items: center;
+  justify-content: center;
+  height:400px;
+  margin-top:100px;
+}
+
+.dashboard-title{
+  font-weight:600;
+  font-size:1.5rem;
+  text-align: center;
+}
+
+.table{
+  width:100%;
+}
+
+.table tr{
+  border-bottom:solid 1px #eaeaea
+}
+
+.table tr:nth-child(even){
+  background-color:#f9fafb;
+}
+
+.table-header{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:20px;
+}
+
+.table-loader{
+  width:100%;
+  height:var(--normal);
+  background-color:#eaeaea;
+  border-radius: 50px;
+}
+
+.table td, .table th{
+  padding:10px;
+  font-size:var(--normal);
+  text-align:left;
+}
+
+.table th{
+  text-transform: uppercase;
+  font-size:var(--small);
+  color:#999999;
+}
+
+.edit-button{
+ opacity:0.3;
+ transition:all 0.2s ease-in-out;
+ padding:10px;
+ border-radius: 5px;
+
+}
+
+
+
+.edit-button:hover{
+  opacity:1.0;
+  box-shadow:1px 1px 10px 0px rgba(50,50,50,0.1);
+  background-color:#fff;
+}
+
+.edit-button img{
+  min-width:20px;
+  max-width:20px;
+}
+
+.search-results{
+  position:absolute;
+  top:120%;
+  left:0px;
+  right:0px;
+  z-index:2;
+  background-color:rgba(255,255,255,0.8);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+
+  border-radius: 5px;
+  box-shadow:0px 1px 10px 0px rgba(50,50,50,0.1);
+}
+
+.search-result{
+  cursor:pointer;
+  padding-inline: 10px;
+  padding-block:5px;
+  border-radius:5px;
+}
+
+.search-result:hover{
+  background-color:#eaeaea;
+
+}
+
 

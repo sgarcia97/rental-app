@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/utils/supabase/context";
 interface HeaderProps {
   showUsername?: boolean;
@@ -8,37 +8,33 @@ interface HeaderProps {
 
 export default function Header({ showUsername = false }: HeaderProps) {
   const { logOut, session } = useAuth();
-
-  let displayName: string = "Username";
+  const router = useRouter()
+  let displayName:any = session?.user.email;
 
   if (session) {
-    displayName = session.user.user_metadata.fullName;
+    if(session.user.user_metadata.fullName != ''){
+      displayName = session.user.user_metadata.fullName;
+    }
   }
 
   const handleLogout = async () => {
     await logOut();
   };
   return (
-    <header className="bg-white border-b border-gray-200">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-script text-blue-700">
-              SecureHome
-            </Link>
+    <header className="bg-white shadow-sm header">
+     
+          {/* Logo */}
+          <div className="text-[#005377] text-2xl font-serif italic">
+            <span className="text-3xl">S</span>ecure<span className="text-3xl">H</span>ome
           </div>
-          <div className="flex items-center space-x-4">
-            <Link
-              href="/saved-searches"
-              className="text-sm text-gray-700 hover:text-blue-700"
-            >
+
+          {/* Navigation */}
+          <div className="flex items-center gap-6 text-sm">
+            <Link href="#" className="text-gray-600 hover:underline">
               Saved Searches
             </Link>
-            <Link
-              href="/list-property"
-              className="text-sm text-gray-700 hover:text-blue-700"
-            >
-              List a property
+            <Link href="#" className="text-gray-600 hover:underline">
+              List a Property
             </Link>
             {session?.user.email ? (
               <div className="flex items-center">
@@ -48,22 +44,19 @@ export default function Header({ showUsername = false }: HeaderProps) {
                 <Link href="/">
                   <button
                     onClick={handleLogout}
-                    className="h-8 bg-blue-700 text-white hover:bg-blue-800 border-blue-700"
+                    className="button-small"
                   >
                     Log out
                   </button>
                 </Link>
               </div>
             ) : (
-              <Link href="/login">
-                <Button size="sm" className="h-8 bg-blue-700 hover:bg-blue-800">
-                  Login
-                </Button>
-              </Link>
+              <button onClick={()=>router.push('/login')} className="button-small">Login</button>
             )}
+  
           </div>
-        </div>
-      </div>
-    </header>
+     
+      </header>
+
   );
 }

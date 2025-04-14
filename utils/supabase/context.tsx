@@ -56,9 +56,9 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       setIsSession(!!session);
       if (isMounted) setSession(session);
       if(!!session){
-        router.replace('/manager')
+        //router.replace('/manager')
       }else{
-        router.replace('/')
+        //router.replace('/')
       }
     });
 
@@ -82,9 +82,8 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     try {
       const { error } = await supabase.auth.signUp(data);
       if (error) {
-        router.replace("/signup");
+       alert('An error occured'+error)
       }
-      //revalidatePath('/', 'layout')
       router.replace('/signup/confirmation')
     } catch (error) {
       console.log("Error with sign up - ", error);
@@ -102,7 +101,10 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       if (error) {
 
         alert('Error loggin you in. Please try again')
+      }else{
+        router.push('/manager')
       }
+      
     } catch (error) {
       console.log("Error with sign in - ", error);
     }

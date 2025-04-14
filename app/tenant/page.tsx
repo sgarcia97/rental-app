@@ -1,8 +1,12 @@
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { useAuth } from "@/utils/supabase/context";
+import { redirect } from 'next/navigation'
 import TenantNavigation from "@/components/tenant-navigation"
 
 export default function TenantPage() {
+  const { session } = useAuth()
+  if(!session){ redirect('/')}
   const messages = [
     { name: "Michael Katsap", date: "11/05/2025", message: "Hi, I have an inquiry about....." },
     { name: "Jane Doe", date: "11/04/2025", message: "Hi, I have an inquiry about....." },
