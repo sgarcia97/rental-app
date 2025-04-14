@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Logo from '@/public/logo.svg'
 import { useAuth } from "@/utils/supabase/context";
 interface HeaderProps {
   showUsername?: boolean;
@@ -24,12 +26,23 @@ export default function Header({ showUsername = false }: HeaderProps) {
     <header className="bg-white shadow-sm header">
      
           {/* Logo */}
-          <div className="text-[#005377] text-2xl font-serif italic">
-            <span className="text-3xl">S</span>ecure<span className="text-3xl">H</span>ome
+          
+          <div onClick={()=>router.push('/')} className="text-[#005377] text-1xl font-serif italic logo-wrapper">
+          
+            <Image src={Logo} alt="" className="logo"/>
+            <span><span className="text-2xl">S</span>ecure<span className="text-2xl">H</span>ome</span>
           </div>
 
           {/* Navigation */}
           <div className="flex items-center gap-6 text-sm">
+            { session &&
+          <><Link href="/manager" className="text-gray-600 hover:underline">
+              Landlord
+            </Link>
+            <Link href="/tenant" className="text-gray-600 hover:underline">
+              Tenant
+            </Link></>
+}
             <Link href="#" className="text-gray-600 hover:underline">
               Saved Searches
             </Link>

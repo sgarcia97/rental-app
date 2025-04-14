@@ -2,6 +2,7 @@ import { addContract, getContract, getProperties, updateContract} from "@/lib/se
 import { useAuth } from "@/utils/supabase/context"
 import { useState, useEffect } from 'react'
 import moment from "moment"
+import { styles } from "@/styles/styles"
 
 type ContractFormType = {
   id?:any;
@@ -45,13 +46,11 @@ const ContractForm = ({id=null}:ContractFormType) => {
 
       <form className="max-w-2xl mx-auto space-y-6" onSubmit={handleSubmit}>
         <div className="space-y-2">
-          <label htmlFor="listingId" className="block text-sm font-medium text-gray-700">
-            Listing ID
-          </label>
+          <label className={styles.label}>Listing ID</label>
           <select
             id="listingId"
             name="property_id"
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
+            className={styles.input}
           >
             {
               propertyList && propertyList.map((property:any, i:number) => {
@@ -60,84 +59,71 @@ const ContractForm = ({id=null}:ContractFormType) => {
                   sel = true
                 }
                 return <option key={i} value={property.property_id} selected={sel}>{property.address}</option>
-})
+              })
             }
             </select>
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="landlordName" className="block text-sm font-medium text-gray-700">
-            Rent Amount
-          </label>
+          <label className={styles.label}>Rent Amount</label>
           <input
             type="number"
             name="rent_amount"
             defaultValue={data && data[0].rent_amount}
             placeholder="Rent Amount"
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
+            className={styles.input}
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Deposit
-          </label>
+          <label className={styles.label}>Deposit</label>
           <input
             type="number"
             name="deposit_amount"
             placeholder="Deposit"
             defaultValue={data && data[0].deposit_amount}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
+            className={styles.input}
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Late Fee
-          </label>
+          <label className={styles.label}>Late Fee</label>
           <input
             type="number"
             name="late_fee"
             placeholder="Late fee"
             defaultValue={data && data[0].late_fee}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
+            className={styles.input}
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Rent due date
-          </label>
+          <label className={styles.label}>Rent due date</label>
           <input
             type="date"
-   
             name="rent_due_date"
             placeholder="Rent due date"
             defaultValue={data && moment(data[0].rent_due_date).format('YYYY-MM-DD')}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
+            className={styles.input}
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Rent Interval
-          </label>
+          <label className={styles.label}>Rent Interval</label>
           <input
             type="number"
             name="rent_interval"
             placeholder="Rent interval"
             defaultValue={data && data[0].rent_interval}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
+            className={styles.input}
           />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Status
-          </label>
+          <label className={styles.label}>Status</label>
           <select
             name="status"
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
+            className={styles.input}
           >
             <option value="Pending">Pending</option>
             <option value="Active">Active</option>
@@ -148,7 +134,7 @@ const ContractForm = ({id=null}:ContractFormType) => {
         <div className="text-center">
           <button
             type="submit"
-            className="bg-[#005377] text-white px-6 py-2 rounded-md text-sm hover:bg-[#004466] transition-colors"
+            className={styles.button}
           >
             Create Contract
           </button>

@@ -17,7 +17,7 @@ export default function HomePage() {
           <div className="text-center mb-10">
             <h1 className="text-2xl font-bold">
               Find Your next
-              <br />
+          
               Home now!
             </h1>
           </div>
@@ -25,7 +25,7 @@ export default function HomePage() {
           <SearchHome/>
 
           <div className="mb-12">
-            <h2 className="text-lg font-medium mb-4">Recently Listed</h2>
+            <h2 className="text-lg font-medium  mb-4">Recently Listed</h2>
             <div className="relative">
               <div className="flex space-x-4 overflow-x-auto pb-4">
                 <div className="min-w-[250px] rounded-lg overflow-hidden shadow-md">

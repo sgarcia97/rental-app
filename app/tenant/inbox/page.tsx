@@ -1,3 +1,4 @@
+'use client'
 import TemplateTenant from "@/components/template-tenant"
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
@@ -18,7 +19,7 @@ export default function InboxPage() {
 
           <div className="bg-white rounded-md shadow-sm mt-6">
             <div className="p-4 border-b">
-              <h2 className="text-sm font-medium">Inbox (4 messages)</h2>
+              <h2 className="text-sm font-medium">Inbox (5 messages)</h2>
             </div>
 
             <table className="table">

@@ -1,5 +1,8 @@
+'use client'
 import TemplateTenant from "@/components/template-tenant"
 import Image from "next/image"
+import Visa from '@/public/visa.svg'
+import Paypal from '@/public/paypal.svg'
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
 
@@ -33,13 +36,13 @@ export default function PayRentPage() {
               <h3 className="font-medium mb-4">How would you like to Pay?</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div className="border rounded-md p-3 flex items-center justify-center">
-                  <Image src="/visa-icon.svg" alt="Visa" width={40} height={25} />
+                  <Image src={Visa} alt="Visa" width={40} height={40} />
                 </div>
                 <div className="border rounded-md p-3 flex items-center justify-center">
-                  <Image src="/paypal-icon.svg" alt="PayPal" width={40} height={25} />
+                  <Image src={Paypal} alt="PayPal" width={40} height={40} />
                 </div>
                 <div className="border rounded-md p-3 flex items-center justify-center">
-                  <Image src="/mastercard-icon.svg" alt="Mastercard" width={40} height={25} />
+                  <Image src="/mastercard-icon.svg" alt="Mastercard" width={40} height={40} />
                 </div>
                 <div className="border rounded-md p-3 flex items-center justify-center">
                   <Image src="/interac-icon.svg" alt="Interac" width={40} height={25} />

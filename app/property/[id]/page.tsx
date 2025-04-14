@@ -8,6 +8,7 @@ import { MapPin, Heart, Calendar, User, Mail, Phone, MoreVertical } from "lucide
 import { useParams } from 'next/navigation'
 import { getProperty } from "@/lib/services"
 import { useEffect, useState } from 'react'
+import Footer from "@/components/footer"
  
 export default function PropertyPage() {
   const [data, setData] = useState<any>(null)
@@ -36,13 +37,11 @@ export default function PropertyPage() {
                 <p className="font-medium">{data[0].address}</p>
                 <p>
                   <Link href="/neighborhoods/beltline" className="text-blue-700 hover:underline">
-                    Beltline
-                  </Link>
-                  , Calgary, AB
+                  {data[0].city} 
+                  </Link>&nbsp;
+                  {data[0].province}
                 </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 mt-2">
+                <div className="flex items-center gap-4 mt-2">
               <Link href="/directions" className="text-blue-700 hover:underline font-medium">
                 Directions
               </Link>
@@ -51,6 +50,10 @@ export default function PropertyPage() {
                 Street View
               </Link>
             </div>
+              </div>
+              
+            </div>
+            
           </div>
  
           <h2 className="text-xl font-bold mb-4">Floor Plans</h2>
@@ -161,6 +164,7 @@ export default function PropertyPage() {
         </div>
       </div>
     </div>
+    <Footer/>
   </div>
   )
 }

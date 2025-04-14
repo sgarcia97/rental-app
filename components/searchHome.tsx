@@ -2,6 +2,8 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
+import Image from "next/image"
+import HomeSearch from "@/public/home-search.svg"
 import { searchProperty } from "@/lib/services"
 import Link from "next/link"
 import { useState, useEffect } from 'react'
@@ -42,7 +44,7 @@ const SearchHome = () => {
                     <div className="search-results">
                         {
                             data && data.map((item:any,i:number)=>{
-                                return <div className="search-result" onClick={()=>router.push(`/property/${item.property_id}`)} key={i}>{item.address}</div>
+                                return <div className="search-result" onClick={()=>router.push(`/property/${item.property_id}`)} key={i}><Image src={HomeSearch} alt="" />{item.address}</div>
                             })
                         }
                     </div>

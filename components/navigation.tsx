@@ -6,16 +6,16 @@ export default function Navigation() {
   return (
     <div className="bg-white rounded-md shadow-sm mb-6">
             <div className="flex border-b">
-              <Link href="/manager/inbox" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/inbox" && 'border-b-2 border-[#005377]'}`}>
+              <Link href="/manager/inbox" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/inbox" && 'tab-active'}`}>
                 Inbox
               </Link>
-              <Link href="/manager" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager" && 'border-b-2 border-[#005377]'}`}>
+              <Link href="/manager" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager" && 'tab-active'}`}>
                 Active Listings
               </Link>
-              <Link href="/manager/active-contracts" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/active-contracts" && 'border-b-2 border-[#005377]'}`}>
+              <Link href="/manager/active-contracts" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/active-contracts" && 'tab-active'}`}>
                 Active Contracts
               </Link>
-              <Link href="/manager/expired-contracts" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/expired-contracts" && 'border-b-2 border-[#005377]'}`}>
+              <Link href="/manager/expired-contracts" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/expired-contracts" && 'tab-active'}`}>
                 Expired Contracts
               </Link>
             </div>

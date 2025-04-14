@@ -10,14 +10,14 @@ export default function TenantNavigation({ activeTab }: TenantNavigationProps) {
   const tabs = [
     { name: "Inbox", path: "/tenant" },
     { name: "Pay Rent", path: "/tenant/pay-rent" },
+    { name: "Pending Contracts", path: "/tenant/pending-contracts" },
     { name: "Active Contracts", path: "/tenant/active-contracts" },
     { name: "Expired Contracts", path: "/tenant/expired-contracts" },
-    { name: "Sign new Contract", path: "/tenant/sign-contract" },
     { name: "Digital Wallet", path: "/tenant/digital-wallet" },
   ]
 
   return (
-    <nav className="bg-white rounded-md shadow-sm mb-6">
+    <nav className="bg-white rounded-md shadow-sm mb-6 nav">
             <div className="flex border-b">
         {tabs.map((tab) => {
           const isActive =
@@ -29,7 +29,7 @@ export default function TenantNavigation({ activeTab }: TenantNavigationProps) {
             <Link
               key={tab.name}
               href={tab.path}
-              className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == tab.path && 'border-b-2 border-[#005377]'}`}
+              className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == tab.path && 'tab-active'}`}
             >
               {tab.name}
             </Link>

@@ -1,8 +1,10 @@
+'use client'
 import TemplateTenant from "@/components/template-tenant"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
+import Terms from "@/components/Terms";
 
 export default function SignContractPage() {
   const { session } = useAuth()
@@ -11,7 +13,7 @@ export default function SignContractPage() {
     <TemplateTenant>
 
           <div className="bg-white rounded-md shadow-sm mt-6 p-6">
-            <h2 className="text-lg font-medium mb-6">Contract details for listing ID 56776</h2>
+            <h2>Contract details for listing ID 56776</h2>
 
             <div className="max-w-3xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -35,14 +37,8 @@ export default function SignContractPage() {
                 </div>
               </div>
 
-              <div className="mb-8">
-                <div className="font-medium mb-2">Terms and conditions:</div>
-                <div className="text-gray-600">
-                  Terms and conditions are that .......................................................
-                  ...................................................................................
-                  ...................................................................................
-                  ...................................................................................
-                </div>
+              <div className="terms-wrapper">
+                <Terms/>
               </div>
 
               <div className="mb-8">
