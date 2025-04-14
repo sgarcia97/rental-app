@@ -12,11 +12,13 @@ import SignContractForm from "@/components/signContractForm";
 
 const ActiveListingsPage: NextPage = () => {
   const { session } = useAuth()
-  if(!session){ redirect('/')}
+
   const [data, setData] = useState<any>(null)
   const [form, setForm] = useState<boolean>(false)
   const [contract, setContract] = useState<string>("")
   useEffect(()=>{
+    if(!sessionStorage.sess){ redirect(`/`)
+    }
     getPendingContracts().then(d => setData(d))
   },[])
 

@@ -1,43 +1,55 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Header from "@/components/header"
+import Footer from "@/components/footer"
 import Link from "next/link"
+import { useParams, useRouter, redirect } from "next/navigation"
 import { ChevronLeft } from "lucide-react"
+import { useEffect } from "react"
+import { addBooking } from "@/lib/services"
 
-export default function BookingConfirmPage() {
+const BookingConfirmPage = () => {
+
+  const { confirm } = useParams<{confirm:string}>()
+  useEffect(()=>{
+    if(!sessionStorage.sess){ redirect(`/booking/login/${confirm}`)
+    }
+  },[])
+  
+
+  const handleBooking = async (e:any) => {
+    e.preventDefault()
+    const fd = new FormData(e.target)
+    const booking:any = {}
+    for(const [key, value] of fd.entries()){
+      booking[key] = value
+    }
+
+    const data = await addBooking(fd)
+    alert('')
+  }
+  
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex-shrink-0">
-            <Link href="/home" className="text-2xl font-script text-blue-700">
-              SecureHome
-            </Link>
-          </div>
-        </div>
-      </header>
-
+    <Header/>
       <main className="flex-1 bg-white">
         <div className="container mx-auto px-4 py-6">
           <div className="mb-6">
-            <Link href="/home" className="inline-flex items-center text-blue-700">
+            <Link href={`/property/${confirm}`} className="inline-flex items-center text-blue-700">
               <ChevronLeft className="h-4 w-4 mr-1" />
               Request to Book
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <form onSubmit={handleBooking} className="grid md:grid-cols-2 gap-8">
             <div className="space-y-6">
               <div className="border-b pb-4">
                 <h2 className="font-medium mb-4">Your trip</h2>
 
-                <div className="flex justify-between items-center mb-2">
-                  <div>
-                    <h3 className="font-medium">Dates</h3>
-                    <p className="text-sm text-gray-600">Nov 17-20</p>
-                  </div>
-                  <Button variant="ghost" size="sm" className="text-blue-700">
-                    Edit
-                  </Button>
+                <div className="book-input-wrapper">
+                  <h3 className="font-medium">Dates</h3>
+                  <input type="date" className="book-input" name="start_date" required/>
                 </div>
 
                 <div className="flex justify-between items-center">
@@ -45,9 +57,6 @@ export default function BookingConfirmPage() {
                     <h3 className="font-medium">Guests</h3>
                     <p className="text-sm text-gray-600">1 guest</p>
                   </div>
-                  <Button variant="ghost" size="sm" className="text-blue-700">
-                    Edit
-                  </Button>
                 </div>
               </div>
 
@@ -99,11 +108,15 @@ export default function BookingConfirmPage() {
                   <span>Total (CAD)</span>
                   <span>$1,751.95 CAD</span>
                 </div>
+                <button type="submit" className="button-medium">Book</button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </main>
+      <Footer/>
     </div>
   )
 }
+
+export default BookingConfirmPage

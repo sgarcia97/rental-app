@@ -5,14 +5,16 @@ import { useState, useEffect } from 'react'
 import DisputeForm from "@/components/disputeForm"
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
+import Loader from "@/components/loader"
 
 export default function InboxPage() {
-  const { session } = useAuth()
-  if(!session){ redirect('/')}
+
   const [data, setData] = useState<any>(null)
   const [isForm, setIsForm] = useState(false)
 
   useEffect(()=>{
+    if(!sessionStorage.sess){ redirect(`/`)
+    }
     getDisputes().then(d => setData(d))
 
   },[])
@@ -28,6 +30,7 @@ export default function InboxPage() {
     { name: "Ellen Dutch", date: "10/12/2024", message: "Hi, I have an inquiry about....." },
   ]
 
+  if(!data) return <Loader/>
   return (
      <TemplateManager>
 

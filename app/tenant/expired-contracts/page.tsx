@@ -4,15 +4,20 @@ import { getExpiredContracts } from "@/lib/services";
 import TemplateTenant from "@/components/template-tenant";
 import { useState, useEffect } from 'react'
 import { useAuth } from "@/utils/supabase/context";
+import { redirect } from "next/navigation";
+import Loader from "@/components/loader";
 
 const SecureHomePage: NextPage = () => {
   const { session } = useAuth()
   const [data, setData] = useState<any>(null)
 
   useEffect(()=>{
+    if(!sessionStorage.sess){ redirect(`/`)
+    }
     getExpiredContracts(session?.user.id).then(d => setData(d))
   })
 
+  if(!data) return <Loader/>
   return (
     <TemplateTenant>
         

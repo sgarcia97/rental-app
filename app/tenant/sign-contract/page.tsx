@@ -5,10 +5,13 @@ import { Input } from "@/components/ui/input"
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
 import Terms from "@/components/Terms";
+import { useEffect } from "react";
 
 export default function SignContractPage() {
   const { session } = useAuth()
-  if(!session){ redirect('/')}
+  useEffect(()=>{
+    if(!sessionStorage.sess) redirect('/')
+  })
   return (
     <TemplateTenant>
 

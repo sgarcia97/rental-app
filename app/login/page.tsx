@@ -20,7 +20,7 @@ export default function LoginPage() {
     e.preventDefault()
     const formData = new FormData(e.target)
     try{
-      await login(formData)
+      await login(formData,'/manager')
       console.log(session)
       //alert('success')
       //router.replace('/manager')
@@ -31,7 +31,7 @@ export default function LoginPage() {
 
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col no-overflow">
       <div className="flex flex-1">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
@@ -109,6 +109,9 @@ export default function LoginPage() {
                   <Link href="/signup" className="font-semibold text-blue-700 hover:text-blue-600 underline">
                     SignUp
                   </Link>
+                </div>
+                <div className="text-sm">
+                  <span className="text-gray-500">Go to </span> <Link href="/" className="font-semibold text-blue-700 hover:text-blue-600 underline">Home</Link>
                 </div>
               </div>
             </div>

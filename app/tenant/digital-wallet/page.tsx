@@ -3,12 +3,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { ArrowDown, ArrowUp, Repeat, MoreVertical } from "lucide-react"
 import TemplateTenant from "@/components/template-tenant"
-import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
+import { useEffect } from "react"
 
 export default function DigitalWalletPage() {
-  const { session } = useAuth()
-  if(!session){ redirect('/')}
+
+ useEffect(()=>{
+  if(!sessionStorage.sess){ redirect(`/`)
+  }
+ },[])
   const transactions = [
     {
       type: "send",

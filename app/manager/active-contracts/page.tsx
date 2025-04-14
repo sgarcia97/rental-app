@@ -9,15 +9,16 @@ import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
 import moment from "moment";
 import ContractForm from "@/components/contractForm";
-
+import Loader from "@/components/loader";
 const ActiveListingsPage: NextPage = () => {
-  const { session } = useAuth()
-   if(!session){ redirect('/')}
+ 
    const [data, setData] = useState<any>(null)
    const [isForm, setIsForm] = useState(false)
    const [idd, setIdd] = useState<any>("")
 
     useEffect(()=>{
+      if(!sessionStorage.sess){ redirect(`/`)
+      }
       getContracts().then(d => setData(d))
     },[])
 
@@ -26,6 +27,7 @@ const ActiveListingsPage: NextPage = () => {
       setIsForm(!isForm)
     }
 
+    if(!data) return <Loader/>
   return (
    <TemplateManager>
 

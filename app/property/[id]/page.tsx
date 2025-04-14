@@ -5,18 +5,20 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { MapPin, Heart, Calendar, User, Mail, Phone, MoreVertical } from "lucide-react"
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { getProperty } from "@/lib/services"
 import { useEffect, useState } from 'react'
 import Footer from "@/components/footer"
+import Loader from "@/components/loader"
  
 export default function PropertyPage() {
   const [data, setData] = useState<any>(null)
+  const router = useRouter()
   const { id } = useParams<{ id: string}>()
   useEffect(()=>{
     getProperty(id).then(d => setData(d))
   })
-  if(!data){ return <div>Loading...</div>}
+  if(!data) return <Loader/>
   return (
        <div className="flex min-h-screen flex-col">
           <Header />
@@ -113,8 +115,11 @@ export default function PropertyPage() {
         </div>
  
         <div className="w-full md:w-1/3 bg-gray-100 rounded-lg p-6">
+        <h3 className="text-2xl font-bold">Book Property</h3>
+          <Button onClick={()=>{router.push(`/booking/${id}`)}} className="w-full py-6 text-lg bg-blue-700 hover:bg-blue-800">Book now</Button>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">Contact Landlord</h2>
+          
+            <h3 className="text-2xl font-bold">Contact Landlord</h3>
             <MoreVertical className="h-5 w-5" />
           </div>
  
@@ -158,7 +163,7 @@ export default function PropertyPage() {
                 <Calendar className="h-5 w-5" />
               </div>
             </div>
- 
+            
             <Button className="w-full py-6 text-lg bg-blue-700 hover:bg-blue-800">Contact Landlord</Button>
           </form>
         </div>

@@ -170,6 +170,19 @@ body {
   overflow-x:auto;
 }
 
+.loader{
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  display:flex;
+  flex-flow:column nowrap;
+  align-items: center;
+  justify-content: center;
+  background-color: #eaeaea;
+}
+
 .logo{
   width:30px;
 }
@@ -193,6 +206,10 @@ body {
   justify-content: center;
   height:400px;
   margin-top:100px;
+}
+
+.no-overflow{
+  overflow: hidden;
 }
 
 .section{
@@ -338,6 +355,21 @@ h3{
 .search-result:hover{
   background-color:#eaeaea;
 
+}
+
+.book-input-wrapper{
+  display:grid;
+
+}
+
+.book-input{
+  border-bottom: solid 1px #eaeaea;
+  outline:none;
+  padding-bottom:10px;
+}
+
+.book-input:focus{
+  border-bottom: solid 1px var(--lblue);
 }
 
 .toggle-wrapper{

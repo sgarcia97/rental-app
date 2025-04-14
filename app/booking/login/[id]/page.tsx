@@ -1,9 +1,24 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Mail, Lock } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Image from "next/image"
+import { useRouter, useParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useAuth } from "@/utils/supabase/context"
 
 export default function BookingPage() {
+  const router = useRouter()
+  const { id } = useParams<{id:string}>()
+  const { login } = useAuth()
+  const [form, setForm] = useState(false)
+  const handleLogin = async (e:any) => {
+    e.preventDefault()
+    const fd = new FormData(e.target)
+    await login(fd,`/booking/${id}`)
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       <div className="container mx-auto px-4 py-8">
@@ -47,10 +62,52 @@ export default function BookingPage() {
               </Button>
             </div>
 
-            <Button variant="outline" className="w-full">
+            <Button onClick={()=>setForm(!form)} variant="outline" className="w-full">
               <Image src="/email-icon.svg" alt="Email" width={20} height={20} className="mr-2" />
               Continue with email
             </Button>
+            {
+              form && 
+              <form onSubmit={handleLogin}>
+                 <div>
+                    <div className="relative mt-2">
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="Email Address"
+                        autoComplete="email"
+                        required
+                        className="pl-3 pr-10"
+                      />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <Mail className="h-5 w-5 text-blue-600" aria-hidden="true" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="relative mt-2">
+                      <Input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        required
+                        className="pl-3 pr-10"
+                      />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <Lock className="h-5 w-5 text-blue-600" aria-hidden="true" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <button type="submit" className="button-medium">Login</button>
+                    </div>
+              </form>
+            }
           </div>
         </div>
       </div>

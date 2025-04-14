@@ -301,6 +301,24 @@ export const addDispute = async (fd: FormData) => {
         
 }
 
+export const addBooking = async (fd:any) => {
+    
+    const { data, error } = await supabase
+    .from('bookings')
+    .insert([fd])
+    .select()
+
+    if(error){
+        console.log(error)
+        alert('Error adding listing'+error.message)
+    }else{
+        updateContract({status:'Active'},fd.property_id)
+        alert('Contract signed for '+data)
+    }
+    
+        
+}
+
 
 export const caDollar = new Intl.NumberFormat('en-CA', {
     style: 'currency',

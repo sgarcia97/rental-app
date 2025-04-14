@@ -8,18 +8,21 @@ import { getProperties } from "@/lib/services"
 import { useState, useEffect} from 'react'
 import moment from 'moment'
 import ListingForm from "@/components/listingForm"
+import Loader from "@/components/loader"
 
 
 export default function ListingsPage() {
-  const { session } = useAuth()
-if(!session){ redirect('/')}
+
   const [data, setData] = useState<any>(null)
   const [isForm, setIsForm] = useState(false)
   const [id, setId] = useState<any>("")
 
   useEffect(()=>{
+    if(!sessionStorage.sess){ redirect(`/`)
+    }
+  })
+  useEffect(()=>{
     getProperties().then(d => setData(d))
-    console.log(session)
   },[])
 
   const handleListing = (id:string) => {
@@ -28,6 +31,7 @@ if(!session){ redirect('/')}
     setIsForm(!isForm)
   }
 
+  if(!data) return <Loader/>
   return (
     <TemplateManager>
           <div className="bg-white rounded-md shadow-sm mt-6">

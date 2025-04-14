@@ -2,10 +2,15 @@
 import TemplateTenant from "@/components/template-tenant"
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
+import { useEffect } from "react";
 
 export default function InboxPage() {
   const { session } = useAuth()
-  if(!session){ redirect('/')}
+
+  useEffect(()=>{
+    if(!sessionStorage.sess){ redirect(`/`)
+    }
+  },[])
   const messages = [
     { name: "Michael Katsap", date: "11/05/2025", message: "Hi, I have an inquiry about....." },
     { name: "Jane Doe", date: "11/04/2025", message: "Hi, I have an inquiry about....." },

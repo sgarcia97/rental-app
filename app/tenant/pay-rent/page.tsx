@@ -5,10 +5,15 @@ import Visa from '@/public/visa.svg'
 import Paypal from '@/public/paypal.svg'
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
+import { useEffect } from "react"
 
 export default function PayRentPage() {
   const { session } = useAuth()
-  if(!session){ redirect('/')}
+  
+  useEffect(()=>{
+    if(!sessionStorage.sess){ redirect(`/`)
+    }
+  })
   return (
     <TemplateTenant>
 

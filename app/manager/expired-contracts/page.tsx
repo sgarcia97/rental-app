@@ -8,16 +8,18 @@ import { useState, useEffect } from 'react'
 import moment from "moment";
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
+import Loader from "@/components/loader";
 
 const SecureHomePage: NextPage = () => {
-    const { session } = useAuth()
-  if(!session){ redirect('/')}
+
   const [data, setData] = useState<any>(null)
 
   useEffect(()=>{
+    if(!sessionStorage.sess){ redirect(`/`)
+    }
     getExpiredContracts().then(d => setData(d))
   },[])
-
+  if(!data) return <Loader/>
   return (
    <TemplateManager>
 

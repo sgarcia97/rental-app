@@ -9,15 +9,18 @@ import moment from "moment";
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
 import SignContractForm from "@/components/signContractForm";
+import Loader from "@/components/loader";
 
 const ActiveListingsPage: NextPage = () => {
   const { session } = useAuth()
-  if(!session){ redirect('/')}
+
   const [data, setData] = useState<any>(null)
   const [form, setForm] = useState<boolean>(false)
   const [contract, setContract] = useState<string>("")
   useEffect(()=>{
-    getRentalTenants(session.user.id).then(d => setData(d))
+    if(!sessionStorage.sess){ redirect(`/`)
+    }
+    getRentalTenants(session?.user.id).then(d => setData(d))
   },[])
 
   const handleContract = (contract:string) => {
@@ -25,6 +28,7 @@ const ActiveListingsPage: NextPage = () => {
     setForm(!form)
   }
 
+  if(!data) return <Loader/>
   return (
    <TemplateTenant>
 

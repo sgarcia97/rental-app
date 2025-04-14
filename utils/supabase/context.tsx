@@ -11,7 +11,7 @@ interface AuthType {
   session: Session | null;
   isLoading: boolean;
   signUp: (data: FormData) => Promise<void>;
-  login: (data: FormData) => Promise<void>;
+  login: (data: FormData, route: string) => Promise<void>;
   logOut: () => Promise<void>;
 }
 
@@ -25,7 +25,6 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
   //const [user, setUser] = useState<any>(null)
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isSession, setIsSession] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -39,6 +38,8 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
         if (isMounted) {
           setSession(session);
           setIsLoading(false);
+          
+          console.log('Test',sessionStorage.sess)
         }
       } catch (error) {
         console.error("Error retrieving session:", error);
@@ -52,14 +53,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log("Auth state changed:", _event, "Session present?", !!session);
-
-      setIsSession(!!session);
       if (isMounted) setSession(session);
-      if(!!session){
-        //router.replace('/manager')
-      }else{
-        //router.replace('/')
-      }
     });
 
     return () => {
@@ -91,7 +85,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
   };
 
   // Sign in user to account
-  const login = async (formData: FormData): Promise<void> => {
+  const login = async (formData: FormData, route:string = '/manager'): Promise<void> => {
     const data = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
@@ -102,7 +96,8 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
 
         alert('Error loggin you in. Please try again')
       }else{
-        router.replace('/manager')
+        if(!sessionStorage.sess) sessionStorage.sess = 'yes'
+        router.replace(route)
       }
       
     } catch (error) {
@@ -116,6 +111,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     if(error){
       console.log(error.message)
     }else{
+      sessionStorage.clear()
       router.replace('/')
       alert('You are logged out')
     }
