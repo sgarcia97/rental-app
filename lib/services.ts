@@ -238,6 +238,24 @@ export const addRentalTenant = async (fd:any) => {
         
 }
 
+export const getRentalProperty = async (id:string) => {
+    try{
+        const { data: rentals_property_view, error } = await supabase
+        .from('rentals_property_view')
+        .select('*')
+        .eq('property_id',id)
+        if(error){
+            console.log(error)
+            return
+        }
+        return rentals_property_view
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
 
 // DISPLUTES
 

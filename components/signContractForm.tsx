@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
-import { getContract, caDollar, addRentalTenant } from "@/lib/services";
+import { getRentalProperty, caDollar, addRentalTenant } from "@/lib/services";
 import Terms from "@/components/Terms";
 import { useState, useEffect } from 'react'
 import moment from "moment";
@@ -15,7 +15,7 @@ const SignContractForm = ({rental}:ContractType) => {
     const { session } = useAuth()
     console.log(session)
     useEffect(()=>{
-        getContract(rental).then(d => setData(d))
+        getRentalProperty(rental).then(d => setData(d))
     },[])
 
     const handleSubmit = async (e:any)=>{
@@ -45,7 +45,7 @@ const SignContractForm = ({rental}:ContractType) => {
                         <tbody>
                         <tr>
                             <td>Property Details</td>
-                            <td>{data[0].property_id}</td>
+                            <td>{data[0].address}</td>
                         </tr>
                         <tr>
                             <td>Monthly Payment</td>
@@ -93,8 +93,8 @@ const SignContractForm = ({rental}:ContractType) => {
                     </label>
                 </div>
                 <div className="font-medium mb-2">Your Sign Here</div>
-                <div><input name="property_id" defaultValue={rental} /></div>
-                <div><input name="tenant_id" defaultValue={session?.user.id} /></div>
+                <div><input type="hidden" name="property_id" defaultValue={rental} /></div>
+                <div><input type="hidden" name="tenant_id" defaultValue={session?.user.id} /></div>
                 <Input type="email" name="email" title="Please enter your email address to sign contract" minLength={8} className="max-w-xs"  required/>
               </div>
 
