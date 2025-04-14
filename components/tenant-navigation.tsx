@@ -10,9 +10,9 @@ export default function TenantNavigation({ activeTab }: TenantNavigationProps) {
   const tabs = [
     { name: "Inbox", path: "/tenant" },
     { name: "Pay Rent", path: "/tenant/pay-rent" },
+    { name: "Pending Contracts", path: "/tenant/pending-contracts" },
     { name: "Active Contracts", path: "/tenant/active-contracts" },
     { name: "Expired Contracts", path: "/tenant/expired-contracts" },
-    { name: "Sign new Contract", path: "/tenant/sign-contract" },
     { name: "Digital Wallet", path: "/tenant/digital-wallet" },
   ]
 

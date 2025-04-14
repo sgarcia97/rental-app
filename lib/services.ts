@@ -166,6 +166,24 @@ export const getExpiredContracts = async (id='') => {
         
 }
 
+export const getPendingContracts = async (id='') => {
+    try{
+        const { data: rentals, error } = await supabase
+        .from('rentals')
+        .select('*')
+        .eq('status','Pending')
+        if(error){
+            console.log(error)
+            return
+        }
+        return rentals
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
 export const addContract = async (fd:any) => {
     
     const { data, error } = await supabase
@@ -178,6 +196,43 @@ export const addContract = async (fd:any) => {
         alert('Error adding listing'+error.message)
     }else{
         alert('Contract added for '+data)
+    }
+    
+        
+}
+
+
+export const getRentalTenants = async (id='') => {
+    try{
+        const { data: rental_tenants_view, error } = await supabase
+        .from('rental_tenants_view')
+        .select('*')
+        .eq('tenant_id',id)
+        if(error){
+            console.log(error)
+            return
+        }
+        return rental_tenants_view
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
+export const addRentalTenant = async (fd:any) => {
+    
+    const { data, error } = await supabase
+    .from('rental_tenants')
+    .insert([fd])
+    .select()
+
+    if(error){
+        console.log(error)
+        alert('Error adding listing'+error.message)
+    }else{
+        updateContract({status:'Active'},fd.property_id)
+        alert('Contract signed for '+data)
     }
     
         

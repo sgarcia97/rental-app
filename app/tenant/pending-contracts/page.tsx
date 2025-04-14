@@ -2,7 +2,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import TemplateTenant from "@/components/template-tenant";
-import { getRentalTenants, caDollar } from "@/lib/services";
+import { caDollar, getPendingContracts } from "@/lib/services";
 import { useEffect, useState } from 'react'
 import Edit from "@/public/file-edit.svg"
 import moment from "moment";
@@ -17,7 +17,7 @@ const ActiveListingsPage: NextPage = () => {
   const [form, setForm] = useState<boolean>(false)
   const [contract, setContract] = useState<string>("")
   useEffect(()=>{
-    getRentalTenants(session.user.id).then(d => setData(d))
+    getPendingContracts().then(d => setData(d))
   },[])
 
   const handleContract = (contract:string) => {
@@ -64,7 +64,7 @@ const ActiveListingsPage: NextPage = () => {
                     <td>{listing.rent_interval}</td>
                     <td>{listing.status}</td>
                     <td>
-                      
+                      <button onClick={()=>handleContract(listing.property_id)}className="edit-button"><Image alt="edit" src={Edit}/>Sign Contract</button>
                     </td>
                   </tr>
                 ))}
