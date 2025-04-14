@@ -102,7 +102,7 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
 
         alert('Error loggin you in. Please try again')
       }else{
-        router.push('/manager')
+        router.replace('/manager')
       }
       
     } catch (error) {
@@ -116,8 +116,8 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     if(error){
       console.log(error.message)
     }else{
+      router.replace('/')
       alert('You are logged out')
-      router.replace('/login')
     }
   };
 
