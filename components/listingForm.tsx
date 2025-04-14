@@ -1,6 +1,7 @@
 import { addProperty, getProperties, getProperty, updateProperty} from "@/lib/services"
 import { useAuth } from "@/utils/supabase/context"
 import { useState, useEffect } from 'react'
+import { styles } from "@/styles/styles"
 
 type ListingFormType = {
   id?:any;
@@ -38,48 +39,53 @@ const ListingForm = ({id=null}:ListingFormType) => {
       <div className="bg-white rounded-md shadow-sm p-6">
             <div className="dashboard-title">{id ? 'Update' : 'New'} Listing - {id}</div>
 
-            <form className="max-w-2xl mx-auto space-y-6" onSubmit={handleSubmit}>
-              <div className="space-y-2">
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                  Address
-                </label>
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  defaultValue={data ? data[0].address : ""}
-                  placeholder="Enter Address"
-                  className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="squareFootage" className="block text-sm font-medium text-gray-700">
-                  Description
-                </label>
+            <form className={styles.form} onSubmit={handleSubmit}>
+            
+            <div className="space-y-2">
+                <label className={styles.label}>Description</label>
                 {data && data.description}
                 <input
                   type="text"
                   name="description"
                   defaultValue={data ? data[0].description : ""}
                   placeholder="Enter Description"
-                  className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
+                  className={styles.input}
                 />
               </div>
-             {/*
+
               <div className="space-y-2">
-                <label htmlFor="monthlyRent" className="block text-sm font-medium text-gray-700">
-                  Monthly Rent
-                </label>
+                <label className={styles.label}>Address</label>
                 <input
                   type="text"
-                  id="monthlyRent"
-                  name="monthlyRent"
-                  placeholder="Enter Monthly Rent"
-                  className="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-2 focus:ring-[#005377] focus:border-transparent"
+                  name="address"
+                  defaultValue={data ? data[0].address : ""}
+                  placeholder="Enter Address"
+                  className={styles.input}
                 />
               </div>
-*/}
+
+              <div className="space-y-2">
+                <label className={styles.label}>City</label>
+                <input
+                  type="text"
+                  name="city"
+                  defaultValue={data ? data[0].city : ""}
+                  placeholder="Enter Address"
+                  className={styles.input}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="address" className={styles.label}>Province</label>
+                <input
+                  type="text"
+                  name="province"
+                  defaultValue={data ? data[0].province : ""}
+                  placeholder="Enter Address"
+                  className={styles.input}
+                />
+              </div>
+
               <div className="text-center">
                 <button
                   type="submit"

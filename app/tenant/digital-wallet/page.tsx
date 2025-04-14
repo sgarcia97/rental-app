@@ -1,3 +1,4 @@
+'use client'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { ArrowDown, ArrowUp, Repeat, MoreVertical } from "lucide-react"
@@ -63,27 +64,18 @@ export default function DigitalWalletPage() {
                   <p className="text-gray-500 mb-6">$39.14 USD</p>
 
                   <div className="flex justify-center space-x-4">
-                    <Button
-                      size="sm"
-                      className="rounded-full bg-blue-700 hover:bg-blue-800 flex flex-col items-center px-6"
-                    >
-                      <ArrowDown className="h-5 w-5 mb-1" />
+                    <button className="button-round">
+                      <ArrowDown/>
                       <span>Buy</span>
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="rounded-full bg-blue-700 hover:bg-blue-800 flex flex-col items-center px-6"
-                    >
-                      <ArrowUp className="h-5 w-5 mb-1" />
+                    </button>
+                    <button className="button-round">
+                      <ArrowUp/>
                       <span>Send</span>
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="rounded-full bg-blue-700 hover:bg-blue-800 flex flex-col items-center px-6"
-                    >
-                      <Repeat className="h-5 w-5 mb-1" />
+                    </button>
+                   <button className="button-round">
+                      <Repeat/>
                       <span>Swap</span>
-                    </Button>
+                    </button>
                   </div>
                 </div>
 
