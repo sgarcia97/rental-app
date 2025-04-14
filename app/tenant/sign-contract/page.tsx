@@ -1,8 +1,12 @@
 import TemplateTenant from "@/components/template-tenant"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useAuth } from "@/utils/supabase/context";
+import { redirect } from 'next/navigation'
 
 export default function SignContractPage() {
+  const { session } = useAuth()
+  if(!session){ redirect('/')}
   return (
     <TemplateTenant>
 

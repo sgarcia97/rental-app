@@ -5,11 +5,14 @@ import type { NextPage } from "next";
 import TemplateManager from "@/components/template-manager";
 import { useState, useEffect } from "react";
 import { getContracts, caDollar } from "@/lib/services";
+import { useAuth } from "@/utils/supabase/context";
+import { redirect } from 'next/navigation'
 import moment from "moment";
 import ContractForm from "@/components/contractForm";
 
 const ActiveListingsPage: NextPage = () => {
-  
+  const { session } = useAuth()
+   if(!session){ redirect('/')}
    const [data, setData] = useState<any>(null)
    const [isForm, setIsForm] = useState(false)
    const [idd, setIdd] = useState<any>("")

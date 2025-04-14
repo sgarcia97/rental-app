@@ -6,13 +6,17 @@ import { getContracts, caDollar } from "@/lib/services";
 import { useEffect, useState } from 'react'
 import Edit from "@/public/file-edit.svg"
 import moment from "moment";
+import { useAuth } from "@/utils/supabase/context";
+import { redirect } from 'next/navigation'
 
 const ActiveListingsPage: NextPage = () => {
-   const [data, setData] = useState<any>(null)
+  const { session } = useAuth()
+  if(!session){ redirect('/')}
+  const [data, setData] = useState<any>(null)
     
-   useEffect(()=>{
-      getContracts().then(d => setData(d))
-    },[])
+  useEffect(()=>{
+    getContracts().then(d => setData(d))
+  },[])
 
   return (
    <TemplateTenant>

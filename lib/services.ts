@@ -37,6 +37,26 @@ export const getProperty = async (id:string) => {
         
 }
 
+export const searchProperty = async (search:string) => {
+    try{
+        const { data: properties, error } = await supabase
+        .from('properties')
+        .select('*')
+        .or(`description.ilike.%${search}%, address.ilike.%${search}%`)
+        
+
+        if(error){
+            console.log(error)
+            return
+        }
+        return properties
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
 export const addProperty = async (fd: any) => {
     
     const { data, error } = await supabase

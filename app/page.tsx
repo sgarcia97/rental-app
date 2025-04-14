@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import SearchHome from "@/components/searchHome"
 import { Search } from "lucide-react"
 import Image from "next/image"
 import Header from "@/components/header"
@@ -21,24 +22,7 @@ export default function HomePage() {
             </h1>
           </div>
 
-          <div className="max-w-xl mx-auto mb-12">
-            <div className="relative">
-              <Input type="text" placeholder="Search" className="w-full pr-10" />
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                
-                <Button
-                  asChild
-                  size="sm"
-                  variant="ghost"
-                  className="h-8 w-8 p-0 bg-blue-700"
-                >
-                  <Link href="/listings">
-                  <Search className="h-4 w-4 text-white" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
+          <SearchHome/>
 
           <div className="mb-12">
             <h2 className="text-lg font-medium mb-4">Recently Listed</h2>

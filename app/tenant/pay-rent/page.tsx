@@ -1,7 +1,11 @@
 import TemplateTenant from "@/components/template-tenant"
 import Image from "next/image"
+import { useAuth } from "@/utils/supabase/context";
+import { redirect } from 'next/navigation'
 
 export default function PayRentPage() {
+  const { session } = useAuth()
+  if(!session){ redirect('/')}
   return (
     <TemplateTenant>
 

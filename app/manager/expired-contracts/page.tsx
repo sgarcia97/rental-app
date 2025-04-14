@@ -6,8 +6,12 @@ import type { NextPage } from "next";
 import { getExpiredContracts, caDollar } from "@/lib/services";
 import { useState, useEffect } from 'react'
 import moment from "moment";
+import { useAuth } from "@/utils/supabase/context";
+import { redirect } from 'next/navigation'
 
 const SecureHomePage: NextPage = () => {
+    const { session } = useAuth()
+  if(!session){ redirect('/')}
   const [data, setData] = useState<any>(null)
 
   useEffect(()=>{

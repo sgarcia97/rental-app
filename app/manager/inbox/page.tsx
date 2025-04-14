@@ -3,8 +3,12 @@ import TemplateManager from "@/components/template-manager"
 import { getDisputes } from "@/lib/services"
 import { useState, useEffect } from 'react'
 import DisputeForm from "@/components/disputeForm"
+import { useAuth } from "@/utils/supabase/context";
+import { redirect } from 'next/navigation'
 
 export default function InboxPage() {
+  const { session } = useAuth()
+  if(!session){ redirect('/')}
   const [data, setData] = useState<any>(null)
   const [isForm, setIsForm] = useState(false)
 

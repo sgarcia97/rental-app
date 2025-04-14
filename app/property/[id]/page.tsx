@@ -1,11 +1,21 @@
+'use client'
 import Image from "next/image"
 import Header from "@/components/header"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { MapPin, Heart, Calendar, User, Mail, Phone, MoreVertical } from "lucide-react"
+import { useParams } from 'next/navigation'
+import { getProperty } from "@/lib/services"
+import { useEffect, useState } from 'react'
  
 export default function PropertyPage() {
+  const [data, setData] = useState<any>(null)
+  const { id } = useParams<{ id: string}>()
+  useEffect(()=>{
+    getProperty(id).then(d => setData(d))
+  })
+  if(!data){ return <div>Loading...</div>}
   return (
        <div className="flex min-h-screen flex-col">
           <Header />
@@ -13,7 +23,7 @@ export default function PropertyPage() {
       <div className="flex flex-col md:flex-row justify-between items-start gap-8">
         <div className="w-full md:w-2/3">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold">BLVD Beltline</h1>
+            <h1 className="text-2xl font-bold">{data[0].description}</h1>
             <Button variant="outline" className="border-2 gap-2">
               Add to My faves <Heart className="h-5 w-5 fill-black" />
             </Button>
@@ -23,7 +33,7 @@ export default function PropertyPage() {
             <div className="flex items-start gap-2 mb-2">
               <MapPin className="h-5 w-5 mt-1 flex-shrink-0" />
               <div>
-                <p className="font-medium">1229 Macleod Trail SE</p>
+                <p className="font-medium">{data[0].address}</p>
                 <p>
                   <Link href="/neighborhoods/beltline" className="text-blue-700 hover:underline">
                     Beltline

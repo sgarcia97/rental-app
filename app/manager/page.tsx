@@ -12,7 +12,7 @@ import ListingForm from "@/components/listingForm"
 
 export default function ListingsPage() {
   const { session } = useAuth()
-if(session){ redirect('/')}
+if(!session){ redirect('/')}
   const [data, setData] = useState<any>(null)
   const [isForm, setIsForm] = useState(false)
   const [id, setId] = useState<any>("")
