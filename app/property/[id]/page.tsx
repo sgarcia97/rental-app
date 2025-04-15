@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import Footer from "@/components/footer"
 import Loader from "@/components/loader"
 import Template from "@/components/template"
+import Favourites from "@/components/favourites"
  
 export default function PropertyPage() {
   const [data, setData] = useState<any>(null)
@@ -27,9 +28,7 @@ export default function PropertyPage() {
         <div className="w-full md:w-2/3">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">{data[0].description}</h1>
-            <Button variant="outline" className="border-2 gap-2">
-              Add to My faves <Heart className="h-5 w-5 fill-black" />
-            </Button>
+            <Favourites id={id}/>
           </div>
  
           <div className="border-t border-b py-4 mb-6">
@@ -38,17 +37,17 @@ export default function PropertyPage() {
               <div>
                 <p className="font-medium">{data[0].address}</p>
                 <p>
-                  <Link href="/neighborhoods/beltline" className="text-blue-700 hover:underline">
+                  <Link href={`https://www.google.ca/maps/place/${data[0].city}`} target="_blank" className="text-blue-700 hover:underline">
                   {data[0].city} 
-                  </Link>&nbsp;
+                  </Link>,&nbsp;
                   {data[0].province}
                 </p>
-                <div className="flex items-center gap-4 mt-2">
-              <Link href="/directions" className="text-blue-700 hover:underline font-medium">
+                <div className="flex items-center gap-1 mt-2">
+              <Link href={`https://www.google.ca/maps/place/${data[0].address}`} target="_blank" className="text-blue-700 hover:underline">
                 Directions
               </Link>
               <span className="text-gray-500">•</span>
-              <Link href="/street-view" className="text-blue-700 hover:underline font-medium">
+              <Link href="#" className="text-blue-700 hover:underline">
                 Street View
               </Link>
             </div>

@@ -71,9 +71,7 @@ export const addProperty = async (fd: any) => {
         alert('Added'+data[0].address)
         console.log(data)
         return data
-    }
-    
-        
+    }     
 }
 
 export const updateProperty = async (updates:any,id:string) => {
@@ -88,10 +86,7 @@ export const updateProperty = async (updates:any,id:string) => {
         alert('Error updating listing')
     }else{
         alert('Successfully updated')
-    }
-    
-        
-        
+    }      
 }
 
 
@@ -142,10 +137,7 @@ export const updateContract = async (updates:any,id:string) => {
         alert('Error updating contract')
     }else{
         alert('Successfully updated contract')
-    }
-    
-        
-        
+    }       
 }
 
 export const getExpiredContracts = async (id='') => {
@@ -221,7 +213,7 @@ export const addContract = async (fd:any) => {
         
 }
 
-
+// RENTAL TENANTS
 export const getRentalTenants = async (id='') => {
     try{
         const { data: rental_tenants_view, error } = await supabase
@@ -258,6 +250,7 @@ export const addRentalTenant = async (fd:any) => {
         
 }
 
+// RENTAL PROPERTIES
 export const getRentalProperty = async (id:string) => {
     try{
         const { data: rental_property_view, error } = await supabase
@@ -278,7 +271,6 @@ export const getRentalProperty = async (id:string) => {
 
 
 // DISPLUTES
-
 export const getDisputes = async () => {
     try{
         const { data: disputes, error } = await supabase
@@ -321,6 +313,7 @@ export const addDispute = async (fd: FormData) => {
         
 }
 
+// BOOKINGS
 export const addBooking = async (fd:any) => {
     
     const { data, error } = await supabase
@@ -337,7 +330,6 @@ export const addBooking = async (fd:any) => {
     
         
 }
-
 
 export const getBookings = async () => {
     
@@ -373,7 +365,59 @@ export const getBooking = async (id:number) => {
         
 }
 
+//FAVOURTIES
+export const addFavourite = async (id:string, usr:string) => {
+    
+    const { data, error } = await supabase
+    .from('favourites')
+    .insert({'property_id':id, 'user_id':usr})
+    .select()
 
+    if(error){
+        console.log(error)
+        alert('Error adding to favourites: '+error.message)
+    }else{
+        alert('Added to favourites')
+    }
+    
+        
+}
+
+export const getFavourites = async () => {
+    
+    const { data: favourites_view, error } = await supabase
+    .from('favourites_view')
+    .select('*')
+
+    if(error){
+      
+       return error.message
+    }else{
+        return favourites_view
+    }
+    
+        
+}
+
+export const getFavourite = async (id:string) => {
+    try{
+        const { data: favourites_view, error } = await supabase
+        .from('favourites_view')
+        .select('*')
+        .eq('user_id',id)
+        if(error){
+            console.log(error)
+            return
+        }
+        return favourites_view
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
+// CURRENCY FORMATTING
 export const caDollar = new Intl.NumberFormat('en-CA', {
     style: 'currency',
     currency: 'CAD',

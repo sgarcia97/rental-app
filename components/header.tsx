@@ -28,13 +28,16 @@ export default function Header({ showUsername = false }: HeaderProps) {
     <header className="bg-white shadow-sm header">
      
           {/* Logo */}
-          
-          <div onClick={()=>router.push('/')} className="text-[#005377] text-1xl font-serif italic logo-wrapper">
-          
-            <Image src={Logo} alt="" className="logo"/>
-            <span><span className="text-2xl">S</span>ecure<span className="text-2xl">H</span>ome</span>
+          <div className="main-menu">
+            <div onClick={()=>router.push('/')} className="text-[#005377] text-1xl font-serif italic logo-wrapper">
+              <Image src={Logo} alt="" className="logo"/>
+              <span><span className="text-2xl">S</span>ecure<span className="text-2xl">H</span>ome</span>
+            </div>
+            <div className="main-menu-links">
+              <Link href="/" className={`text-gray-600 hover:underline ${pn == '/' && 'active-link'}`}>Home</Link>
+              <Link href="/listings" className={`text-gray-600 hover:underline ${pn == '/listings' && 'active-link'}`}>All listings</Link>
+            </div>
           </div>
-
           {/* Navigation */}
        <div className="profile-wrapper">
             <div className="profile-img">

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Heart, Home, MapPin, Building } from "lucide-react"
 import Template from "@/components/template"
 import { useState, useEffect } from "react"
-import { getProperties } from "@/lib/services"
+import { getProperties, caDollar } from "@/lib/services"
  
 const Listings = () => {
   const [data, setData] = useState<any>(null)
@@ -13,7 +13,7 @@ const Listings = () => {
   useEffect(()=>{
     getProperties().then(d => setData(d))
   })
-
+/*
   const properties = [
     {
       id: "510224",
@@ -59,23 +59,23 @@ const Listings = () => {
       availability: "Immediate availability",
     },
   ]
- 
+ */
   return (
     <Template>
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-2xl font-bold mb-6">Search Results</h1>
+          <h1 className="text-2xl font-bold mb-6">All listings</h1>
  
           <div className="space-y-6">
             {data && data.map((p:any) => (
-              <div key={p.property_id} className="border rounded-md overflow-hidden shadow-sm">
-                <div className="flex flex-col md:flex-row">
-                  <div className="relative md:w-1/4">
+              <div key={p.property_id} className="list">
+      
+                  <div className="list-img-wrapper">
                     <Image
                       src={"/placeholder.svg"}
                       alt={p.address}
-                      width={100}
-                      height={100}
-                      className="property-image"
+                      width={150}
+                      height={150}
+                      className="list-img"
                     />
                     <button className="absolute top-2 left-2 bg-white p-1 rounded-full">
                       <Heart className="h-5 w-5 text-gray-500" />
@@ -86,10 +86,10 @@ const Listings = () => {
                       </div>
                     )*/}
                   </div>
-                  <div className="p-4 md:w-3/4 flex flex-col md:flex-row">
+                  <div className="list-content">
                     <div className="flex-1">
                       <div className="flex justify-between items-start">
-                        <h2 className="text-xl font-bold">{/*property.price*/}</h2>
+                        <div className="text-xl font-bold">{caDollar.format(p.rent)}</div>
                       </div>
                       <div className="mt-2 space-y-1">
                         <div className="flex items-center text-sm">
@@ -115,16 +115,16 @@ const Listings = () => {
                       </div>
                       <div className="mt-2 text-sm text-gray-600">
                         <p>{/*property.availability*/}</p>
-                        <p>ID {p.property_id}</p>
+                        <p>Property ID: {p.property_id}</p>
                       </div>
                     </div>
-                    <div className="mt-4 md:mt-0 md:ml-4 flex items-center">
+                   
                       <Link href={`/property/${p.property_id}`} passHref>
                         <Button className="w-full bg-blue-700 hover:bg-bl</Link>ue-800">View Details</Button>
                       </Link>
-                    </div>
+                 
                   </div>
-                </div>
+  
               </div>
             ))}
           </div>
