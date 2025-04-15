@@ -42,8 +42,8 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
         if (isMounted) {
           setSession(session);
           setIsLoading(false);
-          
-          console.log('Test',sessionStorage.sess)
+
+          console.log("Test", sessionStorage.sess);
         }
       } catch (error) {
         console.error("Error retrieving session:", error);
@@ -58,14 +58,6 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log("Auth state changed:", _event, "Session present?", !!session);
       if (isMounted) setSession(session);
-<<<<<<< HEAD
-=======
-      if (!!session) {
-        //router.replace('/manager')
-      } else {
-        //router.replace('/')
-      }
->>>>>>> bf89a36 (supabase and context updates)
     });
 
     return () => {
@@ -139,7 +131,10 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
   };
 
   // Sign in user to account
-  const login = async (formData: FormData, route:string = '/manager'): Promise<void> => {
+  const login = async (
+    formData: FormData,
+    route: string = "/manager"
+  ): Promise<void> => {
     const data = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
@@ -147,17 +142,10 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     try {
       const { error } = await supabase.auth.signInWithPassword(data);
       if (error) {
-<<<<<<< HEAD
-
-        alert('Error loggin you in. Please try again')
-      }else{
-        if(!sessionStorage.sess) sessionStorage.sess = 'yes'
-        router.replace(route)
-=======
         alert("Error loggin you in. Please try again");
       } else {
-        router.push("/manager");
->>>>>>> bf89a36 (supabase and context updates)
+        if (!sessionStorage.sess) sessionStorage.sess = "yes";
+        router.replace(route);
       }
     } catch (error) {
       console.log("Error with sign in - ", error);
@@ -165,23 +153,13 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
   };
 
   const logOut = async () => {
-<<<<<<< HEAD
-   
-    const { error } = await supabase.auth.signOut()
-    if(error){
-      console.log(error.message)
-    }else{
-      sessionStorage.clear()
-      router.replace('/')
-      alert('You are logged out')
-=======
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.log(error.message);
     } else {
+      sessionStorage.clear();
+      router.replace("/");
       alert("You are logged out");
-      router.replace("/login");
->>>>>>> bf89a36 (supabase and context updates)
     }
   };
 
