@@ -1,6 +1,7 @@
 'use client'
 import Link from "next/link"
 import Image from "next/image"
+import Placeholder from '@/public/property1.png'
 import { Button } from "@/components/ui/button"
 import { Heart, Home, MapPin, Building } from "lucide-react"
 import Template from "@/components/template"
@@ -71,10 +72,9 @@ const Listings = () => {
       
                   <div className="list-img-wrapper">
                     <Image
-                      src={"/placeholder.svg"}
+                      src={Placeholder}
                       alt={p.address}
-                      width={150}
-                      height={150}
+                     
                       className="list-img"
                     />
                     <button className="absolute top-2 left-2 bg-white p-1 rounded-full">

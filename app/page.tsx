@@ -1,14 +1,26 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+'use client'
 import SearchHome from "@/components/searchHome"
-import { Search } from "lucide-react"
 import Image from "next/image"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+import Placeholder from '@/public/property1.png'
 import Template from "@/components/template"
-import Link from "next/link"
+import { useState, useEffect } from "react"
+import { getProperties, caDollar } from "@/lib/services"
+import { useRouter } from 'next/navigation'
+import { Navigation, Pagination, Autoplay} from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 export default function HomePage() {
+  const [data, setData] = useState<any>(null)
+  const router = useRouter()
+  useEffect(()=>{
+      getProperties().then(d => setData(d))
+    })
   return (
     <Template>
         <div className="container mx-auto px-4 py-8">
@@ -25,44 +37,41 @@ export default function HomePage() {
           <div className="mb-12">
             <h2 className="text-lg font-medium  mb-4">Recently Listed</h2>
             <div className="relative">
-              <div className="flex space-x-4 overflow-x-auto pb-4">
-                <div className="min-w-[250px] rounded-lg overflow-hidden shadow-md">
+            <Swiper
+            className="home-slide-wrapper"
+            modules={[Navigation, Pagination, Autoplay]}
+      spaceBetween={30}
+      pagination={{dynamicBullets:true, clickable: true}}
+      slidesPerView={'auto'}
+      navigation
+      autoplay
+      //onSlideChange={() => console.log('slide change')}
+      //onSwiper={(swiper) => console.log(swiper)}
+    >
+                {
+                  data && data.map((prop:any)=>(
+
+                 
+                <SwiperSlide className="home-slide"><div key={prop.property_id} className="rounded-lg overflow-hidden shadow-md home-list" onClick={()=> router.push(`/property/${prop.property_id}`)}>
                   <Image
-                    src="/house1.jpeg"
+                    src={Placeholder}
                     alt="House"
-                    width={250}
-                    height={180}
+                    
                     className="w-full h-[180px] object-cover"
                   />
+                  <div className="home-list-content">
+                  <div className="home-list-subtitle">{prop.description}</div>
+                  <div className="home-list-title">{caDollar.format(prop.rent)}</div>
+                  <div className="home-list-desc">{prop.address}</div>
+                  </div>
                 </div>
-                <div className="min-w-[250px] rounded-lg overflow-hidden shadow-md">
-                  <Image
-                    src="/house2.jpeg"
-                    alt="House"
-                    width={250}
-                    height={180}
-                    className="w-full h-[180px] object-cover"
-                  />
-                </div>
-                <div className="min-w-[250px] rounded-lg overflow-hidden shadow-md">
-                  <Image
-                    src="/house3.jpg"
-                    alt="House"
-                    width={250}
-                    height={180}
-                    className="w-full h-[180px] object-cover"
-                  />
-                </div>
+                </SwiperSlide>
+                  ))
+              }
+                 </Swiper>
               </div>
-              <button className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-700 text-white rounded-full w-8 h-8 flex items-center justify-center">
-                &lt;
-              </button>
-              <button className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-700 text-white rounded-full w-8 h-8 flex items-center justify-center">
-                &gt;
-              </button>
             </div>
           </div>
-        </div>
      </Template>
   )
 }
