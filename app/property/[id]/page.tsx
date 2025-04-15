@@ -10,6 +10,7 @@ import { getProperty } from "@/lib/services"
 import { useEffect, useState } from 'react'
 import Footer from "@/components/footer"
 import Loader from "@/components/loader"
+import Template from "@/components/template"
  
 export default function PropertyPage() {
   const [data, setData] = useState<any>(null)
@@ -20,8 +21,7 @@ export default function PropertyPage() {
   })
   if(!data) return <Loader/>
   return (
-       <div className="flex min-h-screen flex-col">
-          <Header />
+       <Template>
     <div className="max-w-7xl mx-auto px-4 py-6">
       <div className="flex flex-col md:flex-row justify-between items-start gap-8">
         <div className="w-full md:w-2/3">
@@ -169,8 +169,7 @@ export default function PropertyPage() {
         </div>
       </div>
     </div>
-    <Footer/>
-  </div>
+    </Template>
   )
 }
  

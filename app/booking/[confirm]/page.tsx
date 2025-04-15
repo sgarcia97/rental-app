@@ -8,9 +8,10 @@ import { useParams, useRouter, redirect } from "next/navigation"
 import { ChevronLeft } from "lucide-react"
 import { useEffect } from "react"
 import { addBooking } from "@/lib/services"
+import { useAuth } from "@/utils/supabase/context"
 
 const BookingConfirmPage = () => {
-
+  const { session } = useAuth()
   const { confirm } = useParams<{confirm:string}>()
   useEffect(()=>{
     if(!sessionStorage.sess){ redirect(`/booking/login/${confirm}`)
@@ -25,9 +26,8 @@ const BookingConfirmPage = () => {
     for(const [key, value] of fd.entries()){
       booking[key] = value
     }
-
-    const data = await addBooking(fd)
-    alert('')
+    console.log(booking)
+    const data = await addBooking(booking)
   }
   
   return (
@@ -50,6 +50,8 @@ const BookingConfirmPage = () => {
                 <div className="book-input-wrapper">
                   <h3 className="font-medium">Dates</h3>
                   <input type="date" className="book-input" name="start_date" required/>
+                  <input type="hidden" name="tenant_id" defaultValue={session?.user.id}/>
+                  <input type="hidden" name="property_id" defaultValue={confirm}/>
                 </div>
 
                 <div className="flex justify-between items-center">
@@ -97,7 +99,7 @@ const BookingConfirmPage = () => {
               <div className="border-t pt-4">
                 <h3 className="font-medium mb-2">Price Details</h3>
                 <div className="flex justify-between mb-2">
-                  <span>$1,014.73 CAD x 5 nights</span>
+                  <span>$1,014.73 CAD per month for 1 year lease</span>
                   <span>$1,520.14 CAD</span>
                 </div>
                 <div className="flex justify-between mb-2">

@@ -19,7 +19,7 @@ const ActiveListingsPage: NextPage = () => {
   useEffect(()=>{
     if(!sessionStorage.sess){ redirect(`/`)
     }
-    getPendingContracts().then(d => setData(d))
+    getPendingContracts(session?.user.id).then(d => setData(d))
   },[])
 
   const handleContract = (contract:string) => {

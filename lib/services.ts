@@ -172,6 +172,26 @@ export const getPendingContracts = async (id='') => {
         .from('rentals')
         .select('*')
         .eq('status','Pending')
+        .eq('tenant_id',id)
+        if(error){
+            console.log(error)
+            return
+        }
+        return rentals
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
+export const getActiveContracts = async (id='') => {
+    try{
+        const { data: rentals, error } = await supabase
+        .from('rentals')
+        .select('*')
+        .eq('status','Active')
+        .eq('tenant_id',id)
         if(error){
             console.log(error)
             return
@@ -240,15 +260,15 @@ export const addRentalTenant = async (fd:any) => {
 
 export const getRentalProperty = async (id:string) => {
     try{
-        const { data: rentals_property_view, error } = await supabase
-        .from('rentals_property_view')
+        const { data: rental_property_view, error } = await supabase
+        .from('rental_property_view')
         .select('*')
         .eq('property_id',id)
         if(error){
             console.log(error)
             return
         }
-        return rentals_property_view
+        return rental_property_view
     
     }catch(error){
         console.log(error)
@@ -310,12 +330,46 @@ export const addBooking = async (fd:any) => {
 
     if(error){
         console.log(error)
-        alert('Error adding listing'+error.message)
+        alert('Error adding listing: '+error.message)
     }else{
-        updateContract({status:'Active'},fd.property_id)
-        alert('Contract signed for '+data)
+        alert('Booking created for '+data)
     }
     
+        
+}
+
+
+export const getBookings = async () => {
+    
+    const { data: bookings_view, error } = await supabase
+    .from('bookings_view')
+    .select('*')
+
+    if(error){
+      
+       return error.message
+    }else{
+        return bookings_view
+    }
+    
+        
+}
+
+export const getBooking = async (id:number) => {
+    try{
+        const { data: bookings_view, error } = await supabase
+        .from('bookings_view')
+        .select('*')
+        .eq('id',id)
+        if(error){
+            console.log(error)
+            return
+        }
+        return bookings_view
+    
+    }catch(error){
+        console.log(error)
+    }
         
 }
 

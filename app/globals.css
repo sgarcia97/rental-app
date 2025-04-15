@@ -183,6 +183,17 @@ body {
   background-color: #eaeaea;
 }
 
+.property-image{
+  width:180px;
+  object-fit: cover;
+}
+
+.property-features{
+  display:flex;
+  gap:10px;
+  flex-flow:row wrap;
+}
+
 .logo{
   width:30px;
 }
@@ -370,6 +381,15 @@ h3{
 
 .book-input:focus{
   border-bottom: solid 1px var(--lblue);
+}
+
+input:read-only{
+  background-color: #eaeaea;
+}
+
+input:read-only:focus{
+  outline:none;
+  border:solid 1px transparent;
 }
 
 .toggle-wrapper{

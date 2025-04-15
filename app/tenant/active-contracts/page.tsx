@@ -2,7 +2,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import TemplateTenant from "@/components/template-tenant";
-import { getRentalTenants, caDollar } from "@/lib/services";
+import { getActiveContracts, caDollar } from "@/lib/services";
 import { useEffect, useState } from 'react'
 import Edit from "@/public/file-edit.svg"
 import moment from "moment";
@@ -20,7 +20,7 @@ const ActiveListingsPage: NextPage = () => {
   useEffect(()=>{
     if(!sessionStorage.sess){ redirect(`/`)
     }
-    getRentalTenants(session?.user.id).then(d => setData(d))
+    getActiveContracts(session?.user.id).then(d => setData(d))
   },[])
 
   const handleContract = (contract:string) => {

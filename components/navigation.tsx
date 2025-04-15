@@ -12,6 +12,9 @@ export default function Navigation() {
               <Link href="/manager" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager" && 'tab-active'}`}>
                 Active Listings
               </Link>
+              <Link href="/manager/bookings" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/bookings" && 'tab-active'}`}>
+                Bookings
+              </Link>
               <Link href="/manager/active-contracts" className={`px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900  ${pn == "/manager/active-contracts" && 'tab-active'}`}>
                 Active Contracts
               </Link>

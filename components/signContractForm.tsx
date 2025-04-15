@@ -37,15 +37,19 @@ const SignContractForm = ({rental}:ContractType) => {
     if(!data) return <div>Loading</div>
     return(
         <form onSubmit={handleSubmit} className="section">
-            <h2>Contract details for Property {rental}</h2>
+            <h2>Contract details for Property located at {data[0].address}</h2>
 
           
                 <div>
                     <table className="table">
                         <tbody>
                         <tr>
-                            <td>Property Details</td>
-                            <td>{data[0].address}</td>
+                            <td>Property ID</td>
+                            <td>{rental}</td>
+                        </tr>
+                        <tr>
+                            <td>Property Address</td>
+                            <td>{`${data[0].address}, ${data[0].city}, ${data[0].province}`}</td>
                         </tr>
                         <tr>
                             <td>Monthly Payment</td>
@@ -69,11 +73,11 @@ const SignContractForm = ({rental}:ContractType) => {
                         </tr>
                         <tr>
                             <td>Move in date</td>
-                            <td>{moment(data[0].rent_due_date).format('MMM-D-YYYY')}</td>
+                            <td>{moment(data[0].start_time).format('MMM-D-YYYY')}</td>
                         </tr>
                         <tr>
                             <td>Expiry Date</td>
-                            <td>{moment(data[0].rent_due_date).add(1, 'year').calendar()}</td>
+                            <td>{moment(data[0].end_time).format('MMM-D-YYYY')}</td>
                         </tr>
                         </tbody>
                   </table>

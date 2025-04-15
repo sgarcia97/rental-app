@@ -1,14 +1,14 @@
 'use client'
 import Image from "next/image";
-import Edit from "@/public/file-edit.svg"
+import Edit from "@/public/add-document.svg"
 import type { NextPage } from "next";
 import TemplateManager from "@/components/template-manager";
 import { useState, useEffect } from "react";
-import { getContracts, caDollar } from "@/lib/services";
+import { getBookings, caDollar } from "@/lib/services";
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from 'next/navigation'
 import moment from "moment";
-import ContractForm from "@/components/contractForm";
+import ContractBookingForm from "@/components/contractBookingForm";
 import Loader from "@/components/loader";
 const ActiveListingsPage: NextPage = () => {
  
@@ -19,7 +19,7 @@ const ActiveListingsPage: NextPage = () => {
     useEffect(()=>{
       if(!sessionStorage.sess){ redirect(`/`)
       }
-      getContracts().then(d => setData(d))
+      getBookings().then(d => setData(d))
     },[])
 
     const handleContract = (id:string) => {
@@ -33,19 +33,21 @@ const ActiveListingsPage: NextPage = () => {
 
           <div className="bg-white rounded-md shadow-sm">
           <div className="table-header">
-              <h2 className="text-sm font-medium">Contracts - {data && data.length} contract(s)</h2>
-              {isForm && <button onClick={()=>{setIsForm(!isForm)}} className="button-small" >Close</button>}
+              <h2 className="text-sm font-medium">Bookings - {data && data.length} booking(s)</h2>
+              { isForm &&
+              <button onClick={()=>{setIsForm(!isForm)}} className="button-small" >Close</button>
+              }
             </div>
-        { isForm ? <ContractForm id={idd}/> :
+        { isForm ? <ContractBookingForm id={idd}/> :
             <table className="table">
               <thead>
                 <tr>
-                  <th>Rent</th>
-                  <th>Deposit</th>
-                  <th>Late Fee</th>
-                  <th>Due Date</th>
-                  <th>interval</th>
-                  <th>Status</th>
+                  <th>Address</th>
+                  <th>Created</th>
+                  <th>Name</th>
+                  <th>Start Date</th>
+                  <th>City</th>
+                  <th>Province</th>
                   <th></th>
                 </tr>
               </thead>
@@ -58,16 +60,16 @@ const ActiveListingsPage: NextPage = () => {
                   <td><div className="table-loader"></div></td>
                   <td><div className="table-loader"></div></td>
                   <td><div className="table-loader"></div></td>
-                  </tr> : data.map((listing:any, index:number) => (
+                  </tr> : data.map((booking:any, index:number) => (
                   <tr key={index} >
-                    <td>{caDollar.format(listing.rent_amount)}</td>
-                    <td>{caDollar.format(listing.deposit_amount)}</td>
-                    <td>{caDollar.format(listing.late_fee)}</td>
-                    <td>{moment(listing.rent_due_date).format('MMM-D-YYYY')}</td>
-                    <td>{listing.rent_interval}</td>
-                    <td>{listing.status}</td>
+                    <td>{booking.address}</td>
+                    <td>{moment(booking.created_at).format('MMM-D-YYYY')}</td>
+                    <td>{booking.name}</td>
+                    <td>{moment(booking.start_date).format('MMM-D-YYYY')}</td>
+                    <td>{booking.city}</td>
+                    <td>{booking.province}</td>
                     <td>
-                      <button onClick={()=>handleContract(listing.property_id)}className="edit-button"><Image src={Edit} alt=""/></button>
+                      <button onClick={()=>handleContract(booking.id)}className="edit-button"><Image src={Edit} alt=""/>Create</button>
                     </td>
                   </tr>
                 ))}

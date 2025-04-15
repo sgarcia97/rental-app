@@ -5,14 +5,12 @@ import { Search } from "lucide-react"
 import Image from "next/image"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import Template from "@/components/template"
 import Link from "next/link"
 
 export default function HomePage() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-
-      <main className="flex-1">
+    <Template>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center mb-10">
             <h1 className="text-2xl font-bold">
@@ -65,9 +63,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+     </Template>
   )
 }

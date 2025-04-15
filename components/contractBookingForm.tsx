@@ -1,4 +1,4 @@
-import { addContract, getContract, getProperties, updateContract} from "@/lib/services"
+import { addContract, getBooking, getProperties, updateContract} from "@/lib/services"
 import { useAuth } from "@/utils/supabase/context"
 import { useState, useEffect } from 'react'
 import moment from "moment"
@@ -8,20 +8,13 @@ type ContractFormType = {
   id?:any;
 }
 
-const ContractForm = ({id=null}:ContractFormType) => {
+const ContractForm = ({id}:ContractFormType) => {
     const { session } = useAuth()
     const [data, setData] = useState<any>(null)
-    const [propertyList, setPropertyList] = useState<any>(null)
+
     useEffect(()=>{
-      
-        getProperties().then(d => setPropertyList(d))
-
-        if(id){
-          getContract(id).then(d => setData(d))
-    
-        }
-    },[])
-
+      getBooking(id).then(d => setData(d))
+    })
     const handleSubmit = async (e:any) => {
             e.preventDefault()
             const updates:any = {}
@@ -31,38 +24,39 @@ const ContractForm = ({id=null}:ContractFormType) => {
               updates[key] = value
             }
          
-            if(id){
-              const update = await updateContract(updates,id)
-            }else{
             const data = await addContract(updates)
             e.target.reset()
             }
             
-        }
+        
 
     return (
       <div className="bg-white rounded-md shadow-sm p-6">
-      <div className="dashboard-title">New Contract</div>
+      <div className="dashboard-title">Create New Contract for Booking ({id})</div>
 
       <form className="max-w-2xl mx-auto space-y-6" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <label className={styles.label}>Listing ID</label>
-          <select
+          <input
             id="listingId"
             name="property_id"
+            defaultValue={data && data[0].property_id}
             className={styles.input}
-            defaultValue={data && data.property_id}
-          >
-            {
-              propertyList && propertyList.map((property:any, i:number) => {
-                let sel:boolean = false
-                if(id == property.property_id){
-                  sel = true
-                }
-                return <option key={i} >{property.address}</option>
-            })
-            }
-            </select>
+            readOnly
+          />
+          
+        </div>
+
+        <div className="space-y-2">
+          <label className={styles.label}>User ID</label>
+          <input
+            id="listingId"
+            name="tenant_id"
+            defaultValue={data && data[0].tenant_id}
+            className={styles.input}
+            readOnly
+          />
+          
         </div>
 
         <div className="space-y-2">
@@ -70,9 +64,10 @@ const ContractForm = ({id=null}:ContractFormType) => {
           <input
             type="number"
             name="rent_amount"
-            defaultValue={data && data[0].rent_amount}
+            defaultValue={data && data[0].rent}
             placeholder="Rent Amount"
             className={styles.input}
+            readOnly
           />
         </div>
 
@@ -82,8 +77,9 @@ const ContractForm = ({id=null}:ContractFormType) => {
             type="number"
             name="deposit_amount"
             placeholder="Deposit"
-            defaultValue={data && data[0].deposit_amount}
+            defaultValue={''}
             className={styles.input}
+            required
           />
         </div>
 
@@ -93,8 +89,9 @@ const ContractForm = ({id=null}:ContractFormType) => {
             type="number"
             name="late_fee"
             placeholder="Late fee"
-            defaultValue={data && data[0].late_fee}
+            defaultValue={''}
             className={styles.input}
+            required
           />
         </div>
 
@@ -104,8 +101,9 @@ const ContractForm = ({id=null}:ContractFormType) => {
             type="date"
             name="rent_due_date"
             placeholder="Rent due date"
-            defaultValue={data && moment(data[0].rent_due_date).format('YYYY-MM-DD')}
+            defaultValue={''}
             className={styles.input}
+            required
           />
         </div>
 
@@ -115,10 +113,39 @@ const ContractForm = ({id=null}:ContractFormType) => {
             type="number"
             name="rent_interval"
             placeholder="Rent interval"
-            defaultValue={data && data[0].rent_interval}
+            defaultValue={''}
             className={styles.input}
+            required
           />
         </div>
+
+        <div className="space-y-2">
+          <label className={styles.label}>Start Time</label>
+          <input
+            type="date"
+            name="start_time"
+            placeholder="Start time"
+            defaultValue={data && data[0].start_date}
+            className={styles.input}
+            required
+          />
+        </div>
+        
+
+        <div className="space-y-2">
+          <label className={styles.label}>End Time</label>
+          <input
+            type="date"
+            name="end_time"
+            placeholder="End time"
+            defaultValue={data && moment(moment(data[0].start_date).add(1,'year').calendar()).format('YYYY-MM-DD')}
+            className={styles.input}
+            required
+          />
+          
+        </div>
+        
+
 
         <div className="space-y-2">
           <label className={styles.label}>Status</label>
@@ -127,8 +154,7 @@ const ContractForm = ({id=null}:ContractFormType) => {
             className={styles.input}
           >
             <option value="Pending">Pending</option>
-            <option value="Active">Active</option>
-            <option value="Expired">Expired</option>
+         
             </select>
         </div>
 
