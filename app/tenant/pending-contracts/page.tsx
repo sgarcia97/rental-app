@@ -28,8 +28,6 @@ const ActiveListingsPage: NextPage = () => {
   }
 
   return (
-   <TemplateTenant>
-
            <div className="bg-white rounded-md shadow-sm">
           <div className="table-header">
               <h2 className="text-sm font-medium">Contracts ({data && data.length} contracts)</h2>
@@ -74,7 +72,6 @@ const ActiveListingsPage: NextPage = () => {
             </table>
 }
           </div>
-       </TemplateTenant>
   );
 };
 

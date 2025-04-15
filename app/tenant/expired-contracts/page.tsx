@@ -17,10 +17,7 @@ const SecureHomePage: NextPage = () => {
     getExpiredContracts(session?.user.id).then(d => setData(d))
   })
 
-  if(!data) return <Loader/>
-  return (
-    <TemplateTenant>
-        
+  return ( 
         <div className="bg-white rounded-md shadow-sm">
           <div className="table-header">
               <h2 className="text-sm font-medium">Contracts ({data && data.length} contracts)</h2>
@@ -79,7 +76,6 @@ const SecureHomePage: NextPage = () => {
               </tbody>
             </table>
           </div>
-    </TemplateTenant>
   );
 };
 

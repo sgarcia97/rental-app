@@ -15,13 +15,11 @@ export default function ListingsPage() {
 
   const [data, setData] = useState<any>(null)
   const [isForm, setIsForm] = useState(false)
-  const [id, setId] = useState<any>("")
+  const [id, setId] = useState<any>(null)
 
   useEffect(()=>{
     if(!sessionStorage.sess){ redirect(`/`)
     }
-  })
-  useEffect(()=>{
     getProperties().then(d => setData(d))
   },[])
 
@@ -30,16 +28,22 @@ export default function ListingsPage() {
     setId(id)
     setIsForm(!isForm)
   }
+  
+  const handleForm = () => {
+    setIsForm(!isForm)
+    if(isForm === false){
+      setId(null)
+    }
+  }
 
-  if(!data) return <Loader/>
   return (
-    <TemplateManager>
+  
           <div className="bg-white rounded-md shadow-sm mt-6">
           <div className="table-header">
               <h2 className="text-sm font-medium">Contracts - {data && data.length} listing(s)</h2>
-              <button onClick={()=>{setIsForm(!isForm)}} className="button-small" >{isForm ? 'Cancel listing' : 'Create listing'}</button>
+              <button onClick={handleForm} className="button-small" >{isForm ? 'Cancel listing' : 'Create listing'}</button>
             </div>
-{ isForm ? <ListingForm id={id}/> :
+{ isForm ? <ListingForm id={id} /> :
 
             <table className="table">
               <thead className="bg-gray-50">
@@ -70,6 +74,6 @@ export default function ListingsPage() {
             </table>
 }
           </div>
-     </TemplateManager>
+
   )
 }

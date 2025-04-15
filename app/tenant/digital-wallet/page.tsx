@@ -5,9 +5,10 @@ import { ArrowDown, ArrowUp, Repeat, MoreVertical } from "lucide-react"
 import TemplateTenant from "@/components/template-tenant"
 import { redirect } from 'next/navigation'
 import { useEffect } from "react"
+import { useAuth } from "@/utils/supabase/context"
 
 export default function DigitalWalletPage() {
-
+ const { session } = useAuth()
  useEffect(()=>{
   if(!sessionStorage.sess){ redirect(`/`)
   }
@@ -30,14 +31,14 @@ export default function DigitalWalletPage() {
   ]
 
   return (
-   <TemplateTenant>
+
 
           <div className="bg-white rounded-md shadow-sm mt-6">
             <div className="p-6 max-w-3xl mx-auto">
               <div className="bg-white rounded-lg border overflow-hidden">
                 <div className="p-4 border-b flex justify-between items-center">
                   <div>
-                    <div className="font-medium">Account 1</div>
+                    <div className="font-medium">{session?.user.email}</div>
                     <div className="text-xs text-gray-500">0x0000...f1c2</div>
                   </div>
                   <button>
@@ -128,6 +129,5 @@ export default function DigitalWalletPage() {
               </div>
             </div>
           </div>
-          </TemplateTenant>
   )
 }

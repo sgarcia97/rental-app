@@ -1,7 +1,7 @@
 import { addDispute, getProperties} from "@/lib/services"
 import { useAuth } from "@/utils/supabase/context"
 import { useState, useEffect } from 'react'
-
+import { Spinner } from "./loader"
 type DisputeFormType = {
     id?:string;
   }

@@ -20,8 +20,6 @@ export default function InboxPage() {
   ]
 
   return (
-     <TemplateTenant>
-
           <div className="bg-white rounded-md shadow-sm mt-6">
             <div className="p-4 border-b">
               <h2 className="text-sm font-medium">Inbox (5 messages)</h2>
@@ -50,6 +48,5 @@ export default function InboxPage() {
               </tbody>
             </table>
           </div>
-       </TemplateTenant>
   )
 }

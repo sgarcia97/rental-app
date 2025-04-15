@@ -2,6 +2,7 @@ import { addProperty, getProperties, getProperty, updateProperty} from "@/lib/se
 import { useAuth } from "@/utils/supabase/context"
 import { useState, useEffect } from 'react'
 import { styles } from "@/styles/styles"
+import { Spinner } from "./loader"
 
 type ListingFormType = {
   id?:any;
@@ -32,12 +33,14 @@ const ListingForm = ({id=null}:ListingFormType) => {
     useEffect(()=>{
         if(id){
           getProperty(id).then(d => {setData(d); })
+        }else{
+          setData(null)
         }
     },[])
-
+    if(id && !data){ return <Spinner/>}
     return (
       <div className="bg-white rounded-md shadow-sm p-6">
-            <div className="dashboard-title">{id ? 'Update' : 'New'} Listing - {id}</div>
+            <div className="dashboard-title">{id ? 'Update' : 'New'} Listing<div style={{color:'#999', fontSize:'var(--normal'}}>{id}</div></div>
 
             <form className={styles.form} onSubmit={handleSubmit}>
             
@@ -82,6 +85,17 @@ const ListingForm = ({id=null}:ListingFormType) => {
                   name="province"
                   defaultValue={data ? data[0].province : ""}
                   placeholder="Enter Address"
+                  className={styles.input}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="address" className={styles.label}>Rent</label>
+                <input
+                  type="number"
+                  name="rent"
+                  defaultValue={data ? data[0].rent : ""}
+                  placeholder="Enter Rent "
                   className={styles.input}
                 />
               </div>

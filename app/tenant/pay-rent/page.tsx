@@ -15,8 +15,6 @@ export default function PayRentPage() {
     }
   })
   return (
-    <TemplateTenant>
-
           <div className="bg-white rounded-md shadow-sm mt-6 p-6">
             <h2 className="text-lg font-medium mb-6">Pay Rent (June 2023)</h2>
 
@@ -55,6 +53,5 @@ export default function PayRentPage() {
               </div>
             </div>
           </div>
-    </TemplateTenant>
   )
 }

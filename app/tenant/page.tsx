@@ -22,12 +22,6 @@ export default function TenantPage() {
   ]
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header showUsername={true} />
-
-      <main className="flex-1 bg-gray-50">
-        <div className="container mx-auto px-4 py-6">
-          <TenantNavigation />
 
           <div className="bg-white rounded-md shadow-sm mt-6">
             <div className="p-4 border-b">
@@ -66,10 +60,6 @@ export default function TenantPage() {
               </tbody>
             </table>
           </div>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+     
   )
 }

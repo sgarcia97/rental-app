@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Logo from '@/public/logo.svg'
+import Profile from '@/public/profile.svg'
 import { useAuth } from "@/utils/supabase/context";
 interface HeaderProps {
   showUsername?: boolean;
@@ -11,6 +12,7 @@ interface HeaderProps {
 export default function Header({ showUsername = false }: HeaderProps) {
   const { logOut, session } = useAuth();
   const router = useRouter()
+  const pn = usePathname()
   let displayName:any = session?.user.email;
 
   if (session) {
@@ -34,7 +36,10 @@ export default function Header({ showUsername = false }: HeaderProps) {
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center gap-6 text-sm">
+       <div className="profile-wrapper">
+            <div className="profile-img">
+              <Image src={Profile} alt=""/>
+            <div className="menu-links">
             { session &&
           <><Link href="/manager" className="text-gray-600 hover:underline">
               Landlord
@@ -50,25 +55,25 @@ export default function Header({ showUsername = false }: HeaderProps) {
               List a Property
             </Link>
             {session?.user.email ? (
-              <div className="flex items-center">
-                <span className="text-sm text-gray-700 mr-2">
+                <>
+                <div className="text-sm text-gray-700 mr-2">
                   {displayName}
-                </span>
-                <Link href="/">
+                </div>
+           
                   <button
                     onClick={handleLogout}
                     className="button-small"
                   >
                     Log out
                   </button>
-                </Link>
-              </div>
+                  </>
+         
             ) : (
               <button onClick={()=>router.push('/login')} className="button-small">Login</button>
             )}
-  
-          </div>
-     
+  </div>
+  </div>  
+     </div>
       </header>
 
   );

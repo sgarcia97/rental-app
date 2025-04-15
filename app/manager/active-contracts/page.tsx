@@ -27,9 +27,8 @@ const ActiveListingsPage: NextPage = () => {
       setIsForm(!isForm)
     }
 
-    if(!data) return <Loader/>
   return (
-   <TemplateManager>
+
 
           <div className="bg-white rounded-md shadow-sm">
           <div className="table-header">
@@ -75,7 +74,7 @@ const ActiveListingsPage: NextPage = () => {
             </table>
 }
           </div>
-       </TemplateManager>
+
   );
 };
 

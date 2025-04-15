@@ -22,18 +22,8 @@ export default function InboxPage() {
   const handleInbox = () => {
 
   }
-  const messages = [
-    { name: "Michael Katsap", date: "11/05/2025", message: "Hi, I have an inquiry about....." },
-    { name: "Jane Doe", date: "11/04/2025", message: "Hi, I have an inquiry about....." },
-    { name: "Stuart Little", date: "2/01/2025", message: "Hi, I have an inquiry about....." },
-    { name: "Elsa Shane", date: "20/12/2024", message: "Hi, I have an inquiry about....." },
-    { name: "Ellen Dutch", date: "10/12/2024", message: "Hi, I have an inquiry about....." },
-  ]
 
-  if(!data) return <Loader/>
   return (
-     <TemplateManager>
-
           <div className="bg-white rounded-md shadow-sm mt-6">
             <div className="table-header">
               <h2 className="text-sm font-medium">Inbox ({data && data.length} messages)</h2>
@@ -64,6 +54,5 @@ export default function InboxPage() {
             </table>
 }
           </div>
-       </TemplateManager>
   )
 }

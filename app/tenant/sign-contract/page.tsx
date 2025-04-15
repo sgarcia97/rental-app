@@ -13,8 +13,6 @@ export default function SignContractPage() {
     if(!sessionStorage.sess) redirect('/')
   })
   return (
-    <TemplateTenant>
-
           <div className="bg-white rounded-md shadow-sm mt-6 p-6">
             <h2>Contract details for listing ID 56776</h2>
 
@@ -52,6 +50,5 @@ export default function SignContractPage() {
               <Button className="bg-blue-700 hover:bg-blue-800 px-8">Submit</Button>
             </div>
           </div>
-      </TemplateTenant>
   )
 }

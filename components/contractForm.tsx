@@ -3,6 +3,7 @@ import { useAuth } from "@/utils/supabase/context"
 import { useState, useEffect } from 'react'
 import moment from "moment"
 import { styles } from "@/styles/styles"
+import { Spinner } from "./loader"
 
 type ContractFormType = {
   id?:any;
@@ -39,7 +40,7 @@ const ContractForm = ({id=null}:ContractFormType) => {
             }
             
         }
-
+        if(id && !data){ return <Spinner/>}
     return (
       <div className="bg-white rounded-md shadow-sm p-6">
       <div className="dashboard-title">New Contract</div>
