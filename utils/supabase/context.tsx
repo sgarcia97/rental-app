@@ -5,6 +5,10 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "./client";
 import { Session } from "@supabase/supabase-js";
 import { ReactNode } from "react";
+import { assignHardhatWallet } from "../walletUtils";
+//import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
+//const componentClient = createClientComponentClient();
 
 interface AuthType {
   // children:any;
@@ -54,6 +58,14 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       console.log("Auth state changed:", _event, "Session present?", !!session);
       if (isMounted) setSession(session);
+<<<<<<< HEAD
+=======
+      if (!!session) {
+        //router.replace('/manager')
+      } else {
+        //router.replace('/')
+      }
+>>>>>>> bf89a36 (supabase and context updates)
     });
 
     return () => {
@@ -64,23 +76,65 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
 
   // Sign up user for an account
   const signUp = async (formData: FormData): Promise<void> => {
-    const data = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
+    const fullName = formData.get("fullName") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    const signUpData = {
+      email,
+      password,
       options: {
         data: {
-          fullName: formData.get("fullName") as string,
+          fullName,
         },
       },
     };
+
     try {
-      const { error } = await supabase.auth.signUp(data);
+      console.log("[signUp] Attempting signup with email:", email);
+
+      const { data: sessionData, error } = await supabase.auth.signUp(
+        signUpData
+      );
+
       if (error) {
-       alert('An error occured'+error)
+        console.error("[signUp] Supabase signup error:", error.message);
+        alert("An error occurred: " + error.message);
+        return;
       }
-      router.replace('/signup/confirmation')
+
+      console.log(
+        "[signUp] Signup successful, waiting for session to establish..."
+      );
+
+      // Wait longer and refresh the session
+      await new Promise((res) => setTimeout(res, 1500));
+      await supabase.auth.refreshSession(); // Force session refresh
+      const sessionCheck = await supabase.auth.getSession();
+      console.log("Refreshed auth.uid():", sessionCheck.data.session?.user?.id);
+
+      const user = sessionData.user;
+      if (!user) {
+        console.warn("[signUp] Signup succeeded, but user object is missing.");
+        alert("User session missing after signup.");
+        return;
+      }
+
+      console.log("[signUp] User ID from signup:", user.id);
+
+      // const { data: sessionCheck } = await supabase.auth.getSession();
+      // console.log(
+      //   "[signUp] Session check - auth.uid():",
+      //   sessionCheck?.session?.user?.id
+      // );
+
+      console.log("[signUp] Proceeding to update wallet info...");
+      await assignHardhatWallet(user.id, fullName, supabase);
+
+      console.log("[signUp] Wallet assignment complete. Redirecting...");
+      router.replace("/signup/confirmation");
     } catch (error) {
-      console.log("Error with sign up - ", error);
+      console.error("[signUp] Unexpected error:", error);
     }
   };
 
@@ -93,19 +147,25 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
     try {
       const { error } = await supabase.auth.signInWithPassword(data);
       if (error) {
+<<<<<<< HEAD
 
         alert('Error loggin you in. Please try again')
       }else{
         if(!sessionStorage.sess) sessionStorage.sess = 'yes'
         router.replace(route)
+=======
+        alert("Error loggin you in. Please try again");
+      } else {
+        router.push("/manager");
+>>>>>>> bf89a36 (supabase and context updates)
       }
-      
     } catch (error) {
       console.log("Error with sign in - ", error);
     }
   };
 
   const logOut = async () => {
+<<<<<<< HEAD
    
     const { error } = await supabase.auth.signOut()
     if(error){
@@ -114,6 +174,14 @@ export const AuthContextProvider = ({ children }: AuthTypeProps) => {
       sessionStorage.clear()
       router.replace('/')
       alert('You are logged out')
+=======
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log(error.message);
+    } else {
+      alert("You are logged out");
+      router.replace("/login");
+>>>>>>> bf89a36 (supabase and context updates)
     }
   };
 
