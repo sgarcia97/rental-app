@@ -8,6 +8,7 @@ import { getProperties, caDollar, getPropertiesByLocation } from "@/lib/services
 import { useRouter } from 'next/navigation'
 import { Navigation, Pagination, Autoplay} from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Slide from "@/components/slide"
 
 // Import Swiper styles
 import 'swiper/css';
@@ -52,22 +53,9 @@ export default function HomePage() {
     >
                 {
                   data && data.map((prop:any)=>(
-
-                 
-                <SwiperSlide className="home-slide"><div key={prop.property_id} className="rounded-lg overflow-hidden shadow-md home-list" onClick={()=> router.push(`/property/${prop.property_id}`)}>
-                  <Image
-                    src={Placeholder}
-                    alt="House"
-                    
-                    className="w-full h-[180px] object-cover"
-                  />
-                  <div className="home-list-content">
-                  <div className="home-list-subtitle">{prop.description}</div>
-                  <div className="home-list-title">{caDollar.format(prop.rent)}</div>
-                  <div className="home-list-desc">{prop.address}</div>
-                  </div>
-                </div>
-                </SwiperSlide>
+                  <SwiperSlide key={prop.property_id} className="home-slide">
+                    <Slide prop={prop} img={Placeholder}/>
+                  </SwiperSlide>
                   ))
               }
                  </Swiper>
@@ -88,22 +76,9 @@ export default function HomePage() {
             >
                 {
                   edmonton && edmonton.map((prop:any)=>(
-
-                 
-                <SwiperSlide className="home-slide"><div key={prop.property_id} className="rounded-lg overflow-hidden shadow-md home-list" onClick={()=> router.push(`/property/${prop.property_id}`)}>
-                  <Image
-                    src={Placeholder}
-                    alt="House"
-                    
-                    className="w-full h-[180px] object-cover"
-                  />
-                  <div className="home-list-content">
-                  <div className="home-list-subtitle">{prop.description}</div>
-                  <div className="home-list-title">{caDollar.format(prop.rent)}</div>
-                  <div className="home-list-desc">{prop.address}</div>
-                  </div>
-                </div>
-                </SwiperSlide>
+                    <SwiperSlide key={prop.property_id} className="home-slide">
+                      <Slide prop={prop} img={Placeholder}/>
+                    </SwiperSlide>
                   ))
               }
                  </Swiper>
@@ -125,22 +100,9 @@ export default function HomePage() {
             >
                 {
                   calgary && calgary.map((prop:any)=>(
-
-                 
-                <SwiperSlide className="home-slide"><div key={prop.property_id} className="rounded-lg overflow-hidden shadow-md home-list" onClick={()=> router.push(`/property/${prop.property_id}`)}>
-                  <Image
-                    src={Placeholder}
-                    alt="House"
-                    
-                    className="w-full h-[180px] object-cover"
-                  />
-                  <div className="home-list-content">
-                  <div className="home-list-subtitle">{prop.description}</div>
-                  <div className="home-list-title">{caDollar.format(prop.rent)}</div>
-                  <div className="home-list-desc">{prop.address}</div>
-                  </div>
-                </div>
-                </SwiperSlide>
+                    <SwiperSlide key={prop.property_id} className="home-slide">
+                      <Slide prop={prop} img={Placeholder}/>
+                    </SwiperSlide>
                   ))
               }
                  </Swiper>

@@ -26,7 +26,7 @@ const SearchHome = () => {
     return(
         <div className="max-w-xl mx-auto mb-12 relative">
                     <div className="relative">
-                      <Input type="text" placeholder="Search" className="w-full pr-10" onChange={(e)=>handleSearch(e.target.value)}/>
+                      <Input type="text" placeholder="Search for rentals in your area" className="w-full pr-10" onChange={(e)=>handleSearch(e.target.value)}/>
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                         
                         <Button

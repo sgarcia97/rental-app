@@ -445,11 +445,36 @@ export const getFavourite = async (id:string) => {
         .from('favourites_view')
         .select('*')
         .eq('user_id',id)
+        .limit(1)
+        .single()
         if(error){
             console.log(error)
             return
         }
         return favourites_view
+    
+    }catch(error){
+        console.log(error)
+    }
+        
+}
+
+export const removeFavourite = async (id:string, usr:string) => {
+    try{
+        const { data, error } = await supabase
+        .from('favourites')
+        .delete()
+        .eq('user_id',usr)
+        .eq('property_id',id)
+        .select()
+        if(error){
+            alert(error.message)
+            return
+        }else{
+            alert('Deleted successfully')
+            return data
+        }
+        
     
     }catch(error){
         console.log(error)

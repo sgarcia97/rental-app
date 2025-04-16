@@ -3,7 +3,7 @@ import Heart from '@/public/heart.svg'
 import HeartFill from '@/public/heart-filled.svg'
 import Image from 'next/image'
 import { useAuth } from '@/utils/supabase/context'
-import { getFavourite, addFavourite } from '@/lib/services'
+import { getFavourite, addFavourite, removeFavourite } from '@/lib/services'
 
 type FavouritesType = {
     id:string;
@@ -14,16 +14,27 @@ const Favourites = ({id}:FavouritesType) => {
     const [fav, setFav] = useState<boolean>(false)
     const [data, setData] = useState<any>(null)
     useEffect(()=>{
-        session && getFavourite(session.user.id).then(d => setData(d))
+        session && getFavourite(session.user.id).then(d => setData(d) )
+        
     },[])
 
     const handleFavourites = async () => {
-        session ? setFav(!fav) : alert('You need to be signed in to add favourites')
-        session && await addFavourite(id,session.user.id)
+        if(session){  
+        if(data && data.property_id === id){
+            await removeFavourite(id,session.user.id)
+        }else{
+            await addFavourite(id,session.user.id)
+        }
+        getFavourite(session.user.id).then(d => setData(d))
+        setFav(!fav)
+        }else{
+            alert('You need to be signed in to add favourites')
+        }
     }
 
     return(
-        <button onClick={handleFavourites} className="fav-button"><Image alt="" src={fav ? HeartFill : Heart} className="fav-img"/></button>
+
+        <button onClick={handleFavourites} className="fav-button"><Image alt="" src={fav || data && data.property_id === id ? HeartFill : Heart} className="fav-img"/></button>
     )
 }
 

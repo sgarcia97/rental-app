@@ -275,6 +275,10 @@ width:250px !important;
 
 .home-list-content{
   padding:15px;
+  height:200px;
+  display:grid;
+  gap:10px;
+  align-content: space-between;
 }
 
 .home-list-desc{
@@ -435,6 +439,34 @@ h3{
 
 }
 
+.panel-section{
+  box-shadow: -1px 1px 10px 0px rgba(50,50,50,0.2);
+  border:solid 1px #eaeaea;
+}
+
+.gallery-image{
+  border-radius: 10px;
+  object-fit: cover;
+  width:100%;
+  aspect-ratio: 16/9;
+}
+
+.gallery-slide{
+  border-radius: 10px;
+  box-shadow: 0px 1px 10px 0px rgba(50,50,50,0.2) !important;
+}
+
+.floor-plan-img{
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px 0px rgba(50,50,50,0.3)
+}
+
+.payment-option{
+  height:50px;
+  width:100%;
+}
+
 .fav-button{
   width:40px;
   height:40px;
@@ -462,6 +494,7 @@ h3{
 .profile-img{
   width:40px;
   height:40px;
+  user-select: none;
   background-color:#eaeaea;
   border-radius: 100px;
   position:relative;
@@ -470,12 +503,17 @@ h3{
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  outline: solid 3px transparent;
 }
 
 .profile-img img{
   width:30px;
   height:30px;
   opacity:0.6;
+}
+
+.profile-img-active{
+  outline:solid 3px var(--lblue)
 }
 
 .profile-img:hover{
@@ -495,14 +533,21 @@ h3{
   gap:15px;
 }
 
+@keyframes fadeIn {
+  0% {opacity:0; transform:translate(0px, 20px)}
+  100% {opacity:1; transform:translate(0px, 0px)}
+}
+
 .menu-links{
   display:grid;
   grid-template-columns: 1fr;
   position:absolute;
   right:0px;
   width:150px;
-  top:100%;
+  top:105%;
   gap:5px;
+  user-select: none;
+  border:solid 1px #eaeaea;
   transition:all 0.2s ease-in-out;
   background-color:rgba(255,255,255,1);
   -webkit-backdrop-filter: blur(15px);
@@ -510,6 +555,8 @@ h3{
   border-radius:10px;
   padding:10px;
   text-align:right;
+  -webkit-animation: fadeIn 0.2s linear;
+  animation: fadeIn 0.2s linear;
   box-shadow: 1px 1px 10px 0px rgba(50,50,50,0.1)
 
 }

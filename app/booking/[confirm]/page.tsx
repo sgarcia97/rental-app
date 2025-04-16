@@ -4,6 +4,9 @@ import Image from "next/image"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import Link from "next/link"
+import Visa from '@/public/visa.svg'
+import MasterCard from '@/public/mastercard-icon.svg'
+import Paypal from '@/public/paypal.svg'
 import { useParams, useRouter, redirect } from "next/navigation"
 import { ChevronLeft } from "lucide-react"
 import { useEffect } from "react"
@@ -66,13 +69,13 @@ const BookingConfirmPage = () => {
                 <h2 className="font-medium mb-4">How would you like to Pay?</h2>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="border rounded-md p-3 flex items-center justify-center">
-                    <Image src="/visa-icon.svg" alt="Visa" width={40} height={25} />
+                    <Image src={Visa} alt="Visa" className="payment-option"/>
                   </div>
                   <div className="border rounded-md p-3 flex items-center justify-center">
-                    <Image src="/paypal-icon.svg" alt="PayPal" width={40} height={25} />
+                    <Image src={Paypal} alt="PayPal" className="payment-option"/>
                   </div>
                   <div className="border rounded-md p-3 flex items-center justify-center">
-                    <Image src="/mastercard-icon.svg" alt="Mastercard" width={40} height={25} />
+                    <Image src={MasterCard} alt="Mastercard" className="payment-option" />
                   </div>
                 </div>
               </div>

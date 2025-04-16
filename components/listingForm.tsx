@@ -50,7 +50,7 @@ const ListingForm = ({id=null}:ListingFormType) => {
                 <input
                   type="text"
                   name="description"
-                  defaultValue={data ? data[0].description : ""}
+                  defaultValue={data ? data.description : ""}
                   placeholder="Enter Description"
                   className={styles.input}
                 />
@@ -61,7 +61,7 @@ const ListingForm = ({id=null}:ListingFormType) => {
                 <input
                   type="text"
                   name="address"
-                  defaultValue={data ? data[0].address : ""}
+                  defaultValue={data ? data.address : ""}
                   placeholder="Enter Address"
                   className={styles.input}
                 />
@@ -72,7 +72,7 @@ const ListingForm = ({id=null}:ListingFormType) => {
                 <input
                   type="text"
                   name="city"
-                  defaultValue={data ? data[0].city : ""}
+                  defaultValue={data ? data.city : ""}
                   placeholder="Enter Address"
                   className={styles.input}
                 />
@@ -83,7 +83,7 @@ const ListingForm = ({id=null}:ListingFormType) => {
                 <input
                   type="text"
                   name="province"
-                  defaultValue={data ? data[0].province : ""}
+                  defaultValue={data ? data.province : ""}
                   placeholder="Enter Address"
                   className={styles.input}
                 />
@@ -94,7 +94,7 @@ const ListingForm = ({id=null}:ListingFormType) => {
                 <input
                   type="number"
                   name="rent"
-                  defaultValue={data ? data[0].rent : ""}
+                  defaultValue={data ? data.rent : ""}
                   placeholder="Enter Rent "
                   className={styles.input}
                 />

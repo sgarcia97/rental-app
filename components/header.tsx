@@ -42,7 +42,7 @@ export default function Header({ showUsername = false }: HeaderProps) {
           </div>
           {/* Navigation */}
        <div className="profile-wrapper">
-            <div className="profile-img" onClick={()=>setMenu(!menu)}>
+            <div className={`profile-img ${menu && 'profile-img-active'}`} onClick={()=>setMenu(!menu)}>
               <Image src={Profile} alt=""/>
               { menu &&
             <div className="menu-links">

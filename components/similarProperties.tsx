@@ -1,11 +1,9 @@
 import { Navigation, Pagination, Autoplay} from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Placeholder from '@/public/property1.png'
-import Image from 'next/image';
-import { caDollar } from '@/lib/services';
 import { useState, useEffect} from 'react'
 import { getSimilarProperties } from '@/lib/services'
-import { useRouter } from 'next/navigation';
+import Slide from './slide';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -21,7 +19,6 @@ type SimilarType = {
 const SimilarProperties = ({location, id}:SimilarType) => {
     const [data, setData] = useState<any>(null)
     const [similar, setSimilar] = useState<any>(null)
-    const router = useRouter()
 
     useEffect(()=>{
         getSimilarProperties(location, id).then(d => setSimilar(d))
@@ -40,24 +37,11 @@ const SimilarProperties = ({location, id}:SimilarType) => {
         navigation
         >
             {
-              similar && similar.map((prop:any)=>(
-
-             
-            <SwiperSlide className="home-slide"><div key={prop.property_id} className="rounded-lg overflow-hidden shadow-md home-list" onClick={()=> router.push(`/property/${prop.property_id}`)}>
-              <Image
-                src={Placeholder}
-                alt="House"
-                
-                className="w-full h-[180px] object-cover"
-              />
-              <div className="home-list-content">
-              <div className="home-list-subtitle">{prop.description}</div>
-              <div className="home-list-title">{caDollar.format(prop.rent)}</div>
-              <div className="home-list-desc">{prop.address}</div>
-              </div>
-            </div>
+              similar && (similar.length == 0 ? <div>There are no similar properties at this time</div> : similar.map((prop:any)=>(
+            <SwiperSlide className="home-slide">
+                <Slide prop={prop} img={Placeholder}/>
             </SwiperSlide>
-              ))
+              )))
           }
              </Swiper>
           </div>

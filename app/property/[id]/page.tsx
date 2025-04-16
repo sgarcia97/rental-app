@@ -11,6 +11,7 @@ import Loader from "@/components/loader"
 import Template from "@/components/template"
 import Favourites from "@/components/favourites"
 import SimilarProperties from "@/components/similarProperties"
+import PhotoGallery from "@/components/photoGallery"
 
  
 export default function PropertyPage() {
@@ -31,6 +32,7 @@ export default function PropertyPage() {
     <div className="max-w-7xl mx-auto px-4 py-6">
       <div className="flex flex-col md:flex-row justify-between items-start gap-8">
         <div className="w-full md:w-2/3">
+        <PhotoGallery/>
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">{data.description}</h1>
             <Favourites id={id}/>
@@ -71,7 +73,7 @@ export default function PropertyPage() {
                 alt="Living room with city view"
                 width={400}
                 height={300}
-                className="w-full h-64 object-cover"
+                className="floor-plan-img"
               />
             </div>
             <div className="overflow-hidden rounded-md">
@@ -80,7 +82,7 @@ export default function PropertyPage() {
                 alt="Studio apartment layout"
                 width={400}
                 height={300}
-                className="w-full h-64 object-cover"
+                className="floor-plan-img"
               />
             </div>
             <div className="overflow-hidden rounded-md">
@@ -89,7 +91,7 @@ export default function PropertyPage() {
                 alt="Bedroom with window view"
                 width={400}
                 height={300}
-                className="w-full h-64 object-cover"
+                className="floor-plan-img"
               />
             </div>
             <div className="overflow-hidden rounded-md">
@@ -98,7 +100,7 @@ export default function PropertyPage() {
                 alt="Studio apartment alternate view"
                 width={400}
                 height={300}
-                className="w-full h-64 object-cover"
+                className="floor-plan-img"
               />
             </div>
             <div className="overflow-hidden rounded-md">
@@ -107,7 +109,7 @@ export default function PropertyPage() {
                 alt="Living room with city view alternate angle"
                 width={400}
                 height={300}
-                className="w-full h-64 object-cover"
+                className="floor-plan-img"
               />
             </div>
           </div>
@@ -115,7 +117,7 @@ export default function PropertyPage() {
         <SimilarProperties location={data.city} id={id}/>
         </div>
  
-        <div className="w-full md:w-1/3 bg-gray-100 rounded-lg p-6">
+        <div className="w-full md:w-1/3 bg-gray-100 rounded-lg p-6 panel-section">
         <h3 className="text-2xl font-bold">Book Property</h3>
           <Button onClick={()=>{router.push(`/booking/${id}`)}} className="w-full py-6 text-lg bg-blue-700 hover:bg-blue-800">Book now</Button>
           <div className="flex justify-between items-center mb-6">
