@@ -105,11 +105,6 @@ export default function PropertyPage() {
                 className="w-full h-64 object-cover"
               />
             </div>
-            <div className="flex items-center justify-center  h-64">
-              <div className="bg-gray-200 rounded-full p-4">
-                <MoreVertical className="h-8 w-8 text-gray-500" />
-              </div>
-            </div>
           </div>
         </div>
  

@@ -15,8 +15,24 @@ export const getProperties = async () => {
     
     }catch(error){
         console.log(error)
-    }
-        
+    }     
+}
+
+export const getPropertiesByLocation = async (location:string) => {
+    try{
+        const { data: properties, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('city',location)
+        if(error){
+            console.log(error)
+            return
+        }
+        return properties
+    
+    }catch(error){
+        console.log(error)
+    }     
 }
 
 export const getProperty = async (id:string) => {
