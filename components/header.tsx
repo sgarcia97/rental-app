@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from 'react'
 import { useRouter, usePathname } from "next/navigation";
 import Logo from '@/public/logo.svg'
 import Profile from '@/public/profile.svg'
@@ -11,6 +12,7 @@ interface HeaderProps {
 
 export default function Header({ showUsername = false }: HeaderProps) {
   const { logOut, session } = useAuth();
+  const [menu, setMenu] = useState<boolean>(false)
   const router = useRouter()
   const pn = usePathname()
   let displayName:any = session?.user.email;
@@ -40,8 +42,9 @@ export default function Header({ showUsername = false }: HeaderProps) {
           </div>
           {/* Navigation */}
        <div className="profile-wrapper">
-            <div className="profile-img">
+            <div className="profile-img" onClick={()=>setMenu(!menu)}>
               <Image src={Profile} alt=""/>
+              { menu &&
             <div className="menu-links">
             { session &&
           <><Link href="/manager" className="text-gray-600 hover:underline">
@@ -75,6 +78,7 @@ export default function Header({ showUsername = false }: HeaderProps) {
               <button onClick={()=>router.push('/login')} className="button-small">Login</button>
             )}
   </div>
+}
   </div>  
      </div>
       </header>

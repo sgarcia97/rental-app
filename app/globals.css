@@ -469,6 +469,7 @@ h3{
   display:flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .profile-img img{
@@ -481,11 +482,6 @@ h3{
   background-color:#dadada;
 }
 
-.profile-img:hover .menu-links{
-  display:grid;
-  opacity:1.0;
-  transform:translate(0px, 0px)
-}
 
 .main-menu{
   display:flex;
@@ -500,13 +496,11 @@ h3{
 }
 
 .menu-links{
-  display:none;
+  display:grid;
   grid-template-columns: 1fr;
   position:absolute;
   right:0px;
   width:150px;
-  transform: translate(0px -10px);
-  opacity:0;
   top:100%;
   gap:5px;
   transition:all 0.2s ease-in-out;

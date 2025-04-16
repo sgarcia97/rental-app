@@ -1,4 +1,5 @@
 'use client'
+import { Metadata } from "next";
 import Image from "next/image";
 import Edit from "@/public/file-edit.svg"
 import type { NextPage } from "next";
@@ -10,6 +11,11 @@ import { redirect } from 'next/navigation'
 import moment from "moment";
 import ContractForm from "@/components/contractForm";
 import Loader from "@/components/loader";
+
+const metadata : Metadata = {
+  title: 'Active Contracts'
+}
+
 const ActiveListingsPage: NextPage = () => {
  
    const [data, setData] = useState<any>(null)

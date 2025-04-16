@@ -3,7 +3,7 @@ import { AuthContextProvider } from '../utils/supabase/context'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'capstone',
+  title: 'Secure Home Rental Application',
   description: 'secure-home',
 }
 

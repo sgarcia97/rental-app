@@ -24,6 +24,7 @@ export const getPropertiesByLocation = async (location:string) => {
         .from('properties')
         .select('*')
         .eq('city',location)
+       
         if(error){
             console.log(error)
             return
@@ -35,12 +36,33 @@ export const getPropertiesByLocation = async (location:string) => {
     }     
 }
 
+export const getSimilarProperties = async (location:string, id:string) => {
+    try{
+        const { data: properties, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('city',location)
+        .neq('property_id',id)
+        console.log(properties)
+        if(error){
+            console.log(error)
+            return
+        }
+        return properties
+        
+    }catch(error){
+        console.log(error)
+    }     
+}
+
 export const getProperty = async (id:string) => {
     try{
         const { data: properties, error } = await supabase
         .from('properties')
         .select('*')
         .eq('property_id',id)
+        .limit(1)
+        .single()
         if(error){
             console.log(error)
             return
@@ -130,6 +152,8 @@ export const getContract = async (id:string) => {
         .from('rentals')
         .select('*')
         .eq('property_id',id)
+        .limit(1)
+        .single()
         if(error){
             console.log(error)
             return

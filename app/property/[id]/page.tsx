@@ -1,25 +1,30 @@
 'use client'
 import Image from "next/image"
-import Header from "@/components/header"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { MapPin, Heart, Calendar, User, Mail, Phone, MoreVertical } from "lucide-react"
 import { useParams, useRouter } from 'next/navigation'
-import { getProperty } from "@/lib/services"
+import { getProperty, caDollar } from "@/lib/services"
 import { useEffect, useState } from 'react'
-import Footer from "@/components/footer"
 import Loader from "@/components/loader"
 import Template from "@/components/template"
 import Favourites from "@/components/favourites"
+import SimilarProperties from "@/components/similarProperties"
+
  
 export default function PropertyPage() {
   const [data, setData] = useState<any>(null)
+  const [similar, setSimilar] = useState<any>(null)
   const router = useRouter()
   const { id } = useParams<{ id: string}>()
   useEffect(()=>{
     getProperty(id).then(d => setData(d))
-  })
+    console.log(data)
+   
+  },[])
+
+
   if(!data) return <Loader/>
   return (
        <Template>
@@ -27,7 +32,7 @@ export default function PropertyPage() {
       <div className="flex flex-col md:flex-row justify-between items-start gap-8">
         <div className="w-full md:w-2/3">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold">{data[0].description}</h1>
+            <h1 className="text-2xl font-bold">{data.description}</h1>
             <Favourites id={id}/>
           </div>
  
@@ -35,15 +40,15 @@ export default function PropertyPage() {
             <div className="flex items-start gap-2 mb-2">
               <MapPin className="h-5 w-5 mt-1 flex-shrink-0" />
               <div>
-                <p className="font-medium">{data[0].address}</p>
+                <p className="font-medium">{data.address}</p>
                 <p>
-                  <Link href={`https://www.google.ca/maps/place/${data[0].city}`} target="_blank" className="text-blue-700 hover:underline">
-                  {data[0].city} 
+                  <Link href={`https://www.google.ca/maps/place/${data.city}`} target="_blank" className="text-blue-700 hover:underline">
+                  {data.city} 
                   </Link>,&nbsp;
-                  {data[0].province}
+                  {data.province}
                 </p>
                 <div className="flex items-center gap-1 mt-2">
-              <Link href={`https://www.google.ca/maps/place/${data[0].address}`} target="_blank" className="text-blue-700 hover:underline">
+              <Link href={`https://www.google.ca/maps/place/${data.address}`} target="_blank" className="text-blue-700 hover:underline">
                 Directions
               </Link>
               <span className="text-gray-500">•</span>
@@ -106,6 +111,8 @@ export default function PropertyPage() {
               />
             </div>
           </div>
+
+        <SimilarProperties location={data.city} id={id}/>
         </div>
  
         <div className="w-full md:w-1/3 bg-gray-100 rounded-lg p-6">
