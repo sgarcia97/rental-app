@@ -2,6 +2,7 @@
 import { Building, Home, Link, MapPin } from "lucide-react";
 import Image from "next/image";
 import Heart from '@/public/heart-filled.svg'
+import Directions from '@/public/diamond-turn-right.svg'
 import { getFavourite, caDollar } from "@/lib/services";
 import { Button } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
@@ -20,7 +21,7 @@ const Listing = ({p, img}:ListingType) => {
     useEffect(()=>{
         handleFavourite(p.property_id)
     },[])
-    
+
     const handleFavourite = async (id:string) => {
          const f = session && await getFavourite(id,session.user.id)
          f && setFav(f.property_id)
@@ -81,11 +82,15 @@ const Listing = ({p, img}:ListingType) => {
                    
                    <div className="list-sub-content">
                         <Button onClick={()=>router.push(`/property/${p.property_id}`)} className="bg-blue-700 hover:bg-bl</Link>ue-800">View Details</Button>
-                        {
+                       <div className="list-button-wrapper">
+                       {
                         fav == p.property_id &&
                         <Image src={Heart} alt="" className="list-fave"/>
                       
                       }
+                       <Image onClick={()=>router.push(`https://www.google.ca/maps/place/${p.address}`)} src={Directions} alt="" className="direction-button"/>
+                       
+                      </div>
                   </div>
                  
                   </div>
