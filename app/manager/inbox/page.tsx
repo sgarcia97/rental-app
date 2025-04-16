@@ -1,69 +1,87 @@
-'use client'
-import TemplateManager from "@/components/template-manager"
-import { getDisputes } from "@/lib/services"
-import { useState, useEffect } from 'react'
-import DisputeForm from "@/components/disputeForm"
+"use client";
+import TemplateManager from "@/components/template-manager";
+import { getInterestedProperties, createRental } from "@/lib/landlordServices";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/utils/supabase/context";
-import { redirect } from 'next/navigation'
-import Loader from "@/components/loader"
+import { redirect } from "next/navigation";
+import Loader from "@/components/loader";
 
 export default function InboxPage() {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { session } = useAuth();
 
-  const [data, setData] = useState<any>(null)
-  const [isForm, setIsForm] = useState(false)
-
-  useEffect(()=>{
-    if(!sessionStorage.sess){ redirect(`/`)
+  useEffect(() => {
+    if (!session?.user) {
+      redirect("/");
+      return;
     }
-    getDisputes().then(d => setData(d))
 
-  },[])
+    getInterestedProperties().then((res) => {
+      setData(res || []);
+      setLoading(false);
+    });
+  }, [session]);
 
-  const handleInbox = () => {
+  const handleCreateRental = async (property: any) => {
+    if (!session?.user) {
+      alert("You must be logged in.");
+      return;
+    }
 
-  }
-  const messages = [
-    { name: "Michael Katsap", date: "11/05/2025", message: "Hi, I have an inquiry about....." },
-    { name: "Jane Doe", date: "11/04/2025", message: "Hi, I have an inquiry about....." },
-    { name: "Stuart Little", date: "2/01/2025", message: "Hi, I have an inquiry about....." },
-    { name: "Elsa Shane", date: "20/12/2024", message: "Hi, I have an inquiry about....." },
-    { name: "Ellen Dutch", date: "10/12/2024", message: "Hi, I have an inquiry about....." },
-  ]
+    // Optional: check if the logged in user owns this property
+    if (property.owner_id !== session.user.id) {
+      alert("You are not authorized to create this rental.");
+      return;
+    }
 
-  if(!data) return <Loader/>
+    try {
+      await createRental(property);
+      alert("Rental contract created!");
+    } catch (err) {
+      console.error("Failed to create rental:", err);
+      alert("Rental creation failed. See console.");
+    }
+  };
+
+  if (loading) return <Loader />;
+
   return (
-     <TemplateManager>
-
-          <div className="bg-white rounded-md shadow-sm mt-6">
-            <div className="table-header">
-              <h2 className="text-sm font-medium">Inbox ({data && data.length} messages)</h2>
-              <button onClick={()=>{setIsForm(!isForm)}} className="button-small" >{isForm ? 'Cancel message' : 'Create message'}</button>
-            </div>
-{ isForm ? <DisputeForm/> :
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Date</th>
-                  <th>Message</th>
-                </tr>
-              </thead>
-              <tbody>
-                {!data ? <tr>
-                  <td><div className="table-loader"></div></td>
-                  <td><div className="table-loader"></div></td>
-                  <td><div className="table-loader"></div></td>
-                  </tr> : data.map((message:any, index:number) => (
-                  <tr key={index}>
-                    <td>{message.property_id}</td>
-                    <td>{message.description}</td>
-                    <td>{message.resolved}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-}
-          </div>
-       </TemplateManager>
-  )
+    <TemplateManager>
+      <div className="bg-white rounded-md shadow-sm mt-6">
+        <div className="table-header">
+          <h2 className="text-sm font-medium">
+            Rental Requests ({data.length})
+          </h2>
+        </div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Tenant</th>
+              <th>Description</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((entry, i) => (
+              <tr key={i}>
+                <td>{entry.address}</td>
+                <td>{entry.tenant?.name ?? "Unknown Tenant"}</td>
+                <td>{entry.description}</td>
+                <td>
+                  <button
+                    className="button-small"
+                    onClick={() => handleCreateRental(entry)}
+                  >
+                    Create Rental
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </TemplateManager>
+  );
 }

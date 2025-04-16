@@ -1,60 +1,82 @@
-'use client'
-import TemplateTenant from "@/components/template-tenant"
-import Image from "next/image"
-import Visa from '@/public/visa.svg'
-import Paypal from '@/public/paypal.svg'
+"use client";
+import TemplateTenant from "@/components/template-tenant";
 import { useAuth } from "@/utils/supabase/context";
-import { redirect } from 'next/navigation'
-import { useEffect } from "react"
+import { useEffect, useState } from "react";
+import { redirect } from "next/navigation";
+import { getTenantActiveContracts, payRent } from "@/lib/tenantServices";
+import moment from "moment";
+import { formatEther } from "ethers";
+import { Button } from "@/components/ui/button";
 
 export default function PayRentPage() {
-  const { session } = useAuth()
-  
-  useEffect(()=>{
-    if(!sessionStorage.sess){ redirect(`/`)
+  const { session } = useAuth();
+  const [contracts, setContracts] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!sessionStorage.sess) redirect(`/`);
+    if (!session?.user.id) return;
+
+    getTenantActiveContracts(session.user.id).then((res) => {
+      setContracts(res || []);
+    });
+  }, [session]);
+
+  const handlePay = async (propertyId: string) => {
+    try {
+      await payRent(propertyId);
+      alert("Rent paid successfully!");
+    } catch (err) {
+      console.error("Payment error:", err);
+      alert("Payment failed.");
     }
-  })
+  };
+
   return (
     <TemplateTenant>
+      <div className="bg-white rounded-md shadow-sm mt-6 p-6">
+        <h2 className="text-lg font-medium mb-6">Pay Rent</h2>
 
-          <div className="bg-white rounded-md shadow-sm mt-6 p-6">
-            <h2 className="text-lg font-medium mb-6">Pay Rent (June 2023)</h2>
+        {contracts.length === 0 ? (
+          <p>No active rental contracts.</p>
+        ) : (
+          contracts.map((contract, i) => {
+            const dueDate = moment(contract.rent_due_date);
+            const isLate = moment().isAfter(dueDate);
+            const rent = contract.rent_amount ?? "0";
+            const lateFee = isLate ? contract.late_fee ?? "0" : "0";
+            const total = (BigInt(rent) + BigInt(lateFee)).toString();
 
-            <div className="space-y-4 max-w-md">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Rent Due:</span>
-                <span className="font-medium">$1500</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span className="text-gray-600">Late Payment Fine:</span>
-                <span className="font-medium">$0</span>
-              </div>
-
-              <div className="flex justify-between border-t pt-4">
-                <span className="text-gray-600 font-medium">Total payable:</span>
-                <span className="font-medium">$1500</span>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="font-medium mb-4">How would you like to Pay?</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="border rounded-md p-3 flex items-center justify-center">
-                  <Image src={Visa} alt="Visa" width={40} height={40} />
+            return (
+              <div
+                key={contract.property_id}
+                className="mb-6 border-b pb-4 last:border-none"
+              >
+                <h3 className="text-md font-semibold mb-1">
+                  {contract.address}
+                </h3>
+                <div className="text-sm text-gray-600 mb-1">
+                  Due: {dueDate.format("MMM D, YYYY")}
                 </div>
-                <div className="border rounded-md p-3 flex items-center justify-center">
-                  <Image src={Paypal} alt="PayPal" width={40} height={40} />
+                <div className="text-sm">
+                  Rent: {formatEther(rent)} ETH <br />
+                  Late Fee: {formatEther(lateFee)} ETH <br />
+                  <span className="font-semibold">
+                    Total: {formatEther(total)} ETH
+                  </span>
                 </div>
-                <div className="border rounded-md p-3 flex items-center justify-center">
-                  <Image src="/mastercard-icon.svg" alt="Mastercard" width={40} height={40} />
-                </div>
-                <div className="border rounded-md p-3 flex items-center justify-center">
-                  <Image src="/interac-icon.svg" alt="Interac" width={40} height={25} />
+                <div className="mt-2">
+                  <Button
+                    onClick={() => handlePay(contract.property_id)}
+                    className="bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    Pay Now
+                  </Button>
                 </div>
               </div>
-            </div>
-          </div>
+            );
+          })
+        )}
+      </div>
     </TemplateTenant>
-  )
+  );
 }
