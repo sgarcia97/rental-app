@@ -12,7 +12,7 @@ import Template from "@/components/template"
 import Favourites from "@/components/favourites"
 import SimilarProperties from "@/components/similarProperties"
 import PhotoGallery from "@/components/photoGallery"
-
+import Share from "@/components/share"
  
 export default function PropertyPage() {
   const [data, setData] = useState<any>(null)
@@ -35,7 +35,10 @@ export default function PropertyPage() {
         <PhotoGallery/>
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">{data.description}</h1>
+            <div className="property-icons">
             <Favourites id={id}/>
+            <Share data={data}/>
+            </div>
           </div>
  
           <div className="border-t border-b py-4 mb-6">

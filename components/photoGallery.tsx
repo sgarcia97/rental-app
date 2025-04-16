@@ -36,6 +36,7 @@ const PhotoGallery = () => {
         }}
         modules={[EffectFade, Navigation, Pagination, Autoplay]}
         className="mySwiper gallery-slide"
+        autoplay
       >
         <SwiperSlide>
           <img src="https://images-prod.r2.rentfaster.ca/623563/12993945.v.8a1abe208c819caa71c3b44c0c35f1fe.jpg" className="gallery-image" />

@@ -456,6 +456,12 @@ h3{
   box-shadow: 0px 1px 10px 0px rgba(50,50,50,0.2) !important;
 }
 
+.property-icons{
+  display:flex;
+  align-items: center;
+  gap:10px;
+}
+
 .floor-plan-img{
   aspect-ratio: 16/9;
   border-radius: 10px;

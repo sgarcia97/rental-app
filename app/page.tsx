@@ -47,6 +47,7 @@ export default function HomePage() {
             pagination={{dynamicBullets:true, clickable: true}}
             slidesPerView={'auto'}
             navigation
+            loop
             autoplay
             //onSlideChange={() => console.log('slide change')}
             //onSwiper={(swiper) => console.log(swiper)}
