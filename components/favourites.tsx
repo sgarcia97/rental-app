@@ -14,19 +14,20 @@ const Favourites = ({id}:FavouritesType) => {
     const [fav, setFav] = useState<boolean>(false)
     const [data, setData] = useState<any>(null)
     useEffect(()=>{
-        session && getFavourite(session.user.id).then(d => setData(d) )
-        
+        session && getFavourite(id,session.user.id).then(d => setData(d) )
+        data && console.log('Faves',data)
     },[])
 
     const handleFavourites = async () => {
         if(session){  
-        if(data && data.property_id === id){
+            //setFav(!fav)
+        if(data && data.property_id == id){
             await removeFavourite(id,session.user.id)
         }else{
             await addFavourite(id,session.user.id)
         }
-        getFavourite(session.user.id).then(d => setData(d))
-        setFav(!fav)
+            getFavourite(id,session.user.id).then(d => setData(d))
+        
         }else{
             alert('You need to be signed in to add favourites')
         }
@@ -34,7 +35,7 @@ const Favourites = ({id}:FavouritesType) => {
 
     return(
 
-        <button onClick={handleFavourites} className="fav-button"><Image alt="" src={fav || data && data.property_id === id ? HeartFill : Heart} className="fav-img"/></button>
+        <button onClick={data && data.property_id == id ? ()=>{setFav(false); handleFavourites();} : handleFavourites} className="fav-button"><Image alt="" src={fav || data && data.property_id == id ? HeartFill : Heart} className="fav-img"/></button>
     )
 }
 

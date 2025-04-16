@@ -21,8 +21,6 @@ export default function PropertyPage() {
   const { id } = useParams<{ id: string}>()
   useEffect(()=>{
     getProperty(id).then(d => setData(d))
-    console.log(data)
-   
   },[])
 
 

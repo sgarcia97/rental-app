@@ -54,8 +54,8 @@ export default function Header({ showUsername = false }: HeaderProps) {
               Tenant
             </Link></>
 }
-            <Link href="#" className="text-gray-600 hover:underline">
-              Saved Searches
+            <Link href="/favourites" className="text-gray-600 hover:underline">
+              Saved Favourites
             </Link>
             <Link href="#" className="text-gray-600 hover:underline">
               List a Property

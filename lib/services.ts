@@ -43,7 +43,6 @@ export const getSimilarProperties = async (location:string, id:string) => {
         .select('*')
         .eq('city',location)
         .neq('property_id',id)
-        console.log(properties)
         if(error){
             console.log(error)
             return
@@ -414,20 +413,20 @@ export const addFavourite = async (id:string, usr:string) => {
     .select()
 
     if(error){
-        console.log(error)
-        alert('Error adding to favourites: '+error.message)
+        console.log(error.message)
     }else{
-        alert('Added to favourites')
+        console.log(data)
     }
     
         
 }
 
-export const getFavourites = async () => {
+export const getFavourites = async (usr:string) => {
     
     const { data: favourites_view, error } = await supabase
     .from('favourites_view')
     .select('*')
+    .eq('user_id',usr)
 
     if(error){
       
@@ -439,16 +438,17 @@ export const getFavourites = async () => {
         
 }
 
-export const getFavourite = async (id:string) => {
+export const getFavourite = async (id:string, usr:string) => {
     try{
         const { data: favourites_view, error } = await supabase
         .from('favourites_view')
         .select('*')
-        .eq('user_id',id)
+        .eq('user_id',usr)
+        .eq('property_id',id)
         .limit(1)
         .single()
         if(error){
-            console.log(error)
+            //console.log(error)
             return
         }
         return favourites_view
@@ -468,10 +468,8 @@ export const removeFavourite = async (id:string, usr:string) => {
         .eq('property_id',id)
         .select()
         if(error){
-            alert(error.message)
-            return
+            return error.message
         }else{
-            alert('Deleted successfully')
             return data
         }
         
