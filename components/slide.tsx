@@ -44,7 +44,7 @@ const Slide = ({prop, img}:SlideType) => {
                         <div className="home-list-desc">{prop.city}, {prop.province}</div>
                         <div className="list-button-wrapper">
                        
-                       <Image onClick={()=>router.push(`https://www.google.ca/maps/place/${prop.address}`)} src={Directions} alt="" className="direction-button"/>
+                    
                        {
                         fav == prop.property_id &&
                         <Image src={Heart} alt="" className="list-fave"/>

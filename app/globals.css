@@ -254,10 +254,13 @@ body {
   text-align: center;
 }
 
+.home-slide-wrap{
+  position:relative;
+ 
+}
+
 .home-slide-wrapper{
 padding-block:20px !important;
-border-right:solid 1px #eaeaea;
-border-bottom: solid 1px #eaeaea;
 }
 
 .home-list{
