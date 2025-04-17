@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Logo from '@/public/logo.svg'
 import Profile from '@/public/profile.svg'
 import { useAuth } from "@/utils/supabase/context";
+import Search from "./search";
 interface HeaderProps {
   showUsername?: boolean;
 }
@@ -39,6 +40,7 @@ export default function Header({ showUsername = false }: HeaderProps) {
               <Link href="/" className={`text-gray-600 hover:underline ${pn == '/' && 'active-link'}`}>Home</Link>
               <Link href="/listings" className={`text-gray-600 hover:underline ${pn == '/listings' && 'active-link'}`}>All listings</Link>
             </div>
+            <Search/>
           </div>
           {/* Navigation */}
        <div className="profile-wrapper">

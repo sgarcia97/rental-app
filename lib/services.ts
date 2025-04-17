@@ -79,7 +79,7 @@ export const searchProperty = async (search:string) => {
         const { data: properties, error } = await supabase
         .from('properties')
         .select('*')
-        .or(`description.ilike.%${search}%, address.ilike.%${search}%`)
+        .or(`description.ilike.%${search}%, address.ilike.%${search}%, city.ilike.${search}%, province.ilike.${search}%`)
         
 
         if(error){

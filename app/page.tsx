@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { Navigation, Pagination, Autoplay} from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Slide from "@/components/slide"
+import { SlideLoader } from "@/components/loader"
 
 // Import Swiper styles
 import 'swiper/css';
@@ -53,7 +54,7 @@ export default function HomePage() {
             //onSwiper={(swiper) => console.log(swiper)}
     >
                 {
-                  data && data.map((prop:any)=>(
+                  !data ? <SlideLoader/> : data.map((prop:any)=>(
                   <SwiperSlide key={prop.property_id} className="home-slide">
                     <Slide prop={prop} img={Placeholder}/>
                   </SwiperSlide>
@@ -76,7 +77,7 @@ export default function HomePage() {
             navigation
             >
                 {
-                  edmonton && edmonton.map((prop:any)=>(
+                  !edmonton ? <SlideLoader/> :  edmonton.map((prop:any)=>(
                     <SwiperSlide key={prop.property_id} className="home-slide">
                       <Slide prop={prop} img={Placeholder}/>
                     </SwiperSlide>
@@ -100,7 +101,7 @@ export default function HomePage() {
             navigation   
             >
                 {
-                  calgary && calgary.map((prop:any)=>(
+                  !calgary ? <SlideLoader/> :  calgary.map((prop:any)=>(
                     <SwiperSlide key={prop.property_id} className="home-slide">
                       <Slide prop={prop} img={Placeholder}/>
                     </SwiperSlide>

@@ -88,7 +88,7 @@ const Listing = ({p, img}:ListingType) => {
                         <Image src={Heart} alt="" className="list-fave"/>
                       
                       }
-                       <Image onClick={()=>router.push(`https://www.google.ca/maps/place/${p.address}`)} src={Directions} alt="" className="direction-button"/>
+                       <Image onClick={()=>window.open(`https://www.google.ca/maps/place/${p.address}`,"tab", "popup")} src={Directions} alt="" className="direction-button"/>
                        
                       </div>
                   </div>

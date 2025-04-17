@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
 import Image from "next/image"
 import HomeSearch from "@/public/home-search.svg"
-import { searchProperty } from "@/lib/services"
+import { searchProperty, caDollar } from "@/lib/services"
 import Link from "next/link"
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -12,11 +12,10 @@ import { useRouter } from 'next/navigation'
 const SearchHome = () => {
     const [data, setData] =  useState<any>(null)
     const router = useRouter()
-    const handleSearch = async (search:string) => {
-        if(search != ""){
-        if(search.length >= 2){ 
-        searchProperty(search).then(d => setData(d))
-        console.log(data)
+    const handleSearch = async (e:any) => {
+        if(e.target.value != ""){
+        if(e.target.value.length >= 2){ 
+        searchProperty(e.target.value).then(d => setData(d))
         }
         }else{
             setData(null)
@@ -26,7 +25,7 @@ const SearchHome = () => {
     return(
         <div className="max-w-xl mx-auto mb-12 relative">
                     <div className="relative">
-                      <Input type="text" placeholder="Search for rentals in your area" className="w-full pr-10" onChange={(e)=>handleSearch(e.target.value)}/>
+                      <Input type="text" placeholder="Search for rentals in your area" className="w-full pr-10" onChange={handleSearch}/>
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                         
                         <Button
@@ -44,7 +43,7 @@ const SearchHome = () => {
                     <div className="search-results">
                         {
                             data && data.map((item:any,i:number)=>{
-                                return <div className="search-result" onClick={()=>router.push(`/property/${item.property_id}`)} key={i}><Image src={HomeSearch} alt="" />{item.address}</div>
+                                return <div className="search-result" onClick={()=>router.prefetch(`/property/${item.property_id}`)} key={i}><Image src={HomeSearch} alt="" /><div>{item.description}<div>{item.address}, {item.city} - {caDollar.format(item.rent)}</div></div></div>
                             })
                         }
                     </div>
