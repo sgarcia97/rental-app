@@ -404,6 +404,36 @@ width:300px !important;
   gap:10px;
 }
 
+.section-header{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.section-header-active{
+  background-color:var(--lblue) !important;
+  color:#ffffff;
+}
+
+.section-header-section{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.section-header-section button{
+  background-color:#eaeaea;
+  border:#dadada;
+  border-radius: 5px;
+  padding-inline:10px;
+  padding-block:2px;
+}
+
+.section-header-section button:hover{
+  background-color:#cacaca;
+}
+
 .section-title{
   font-size: var(--medium);
   font-weight:700;

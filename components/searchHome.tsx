@@ -22,28 +22,36 @@ const SearchHome = () => {
         }
     }
 
+    const handleListingSearch = (e:any) => {
+      e.preventDefault()
+   
+      const fd = new FormData(e.target)
+     
+      router.push(`/listings/search/${fd.get('search')}`)
+    }
+
     return(
         <div className="max-w-xl mx-auto mb-12 relative">
-                    <div className="relative">
-                      <Input type="text" placeholder="Search for rentals in your area" className="w-full pr-10" onChange={handleSearch}/>
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <form onSubmit={handleListingSearch} className="relative">
+                      <Input type="text" name="search" placeholder="Search for rentals in your area" className="w-full pr-10" onChange={handleSearch} required/>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3" >
                         
                         <Button
-                          asChild
                           size="sm"
                           variant="ghost"
                           className="h-8 w-8 p-0 bg-blue-700"
+                          type="submit"
                         >
-                          <Link href="/listings">
+                          <span>
                           <Search className="h-4 w-4 text-white" />
-                          </Link>
+                          </span>
                         </Button>
                       </div>
-                    </div>
+                    </form>
                     <div className="search-results">
                         {
                             data && data.map((item:any,i:number)=>{
-                                return <div className="search-result" onClick={()=>router.prefetch(`/property/${item.property_id}`)} key={i}><Image src={HomeSearch} alt="" /><div>{item.description}<div>{item.address}, {item.city} - {caDollar.format(item.rent)}</div></div></div>
+                                return <div className="search-result" onClick={()=>router.push(`/property/${item.property_id}`)} key={i}><Image src={HomeSearch} alt="" /><div>{item.description}<div>{item.address}, {item.city} - {caDollar.format(item.rent)}</div></div></div>
                             })
                         }
                     </div>
