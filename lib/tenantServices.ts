@@ -84,18 +84,62 @@ const getRentalStatus = async (propertyId: string) => {
     RentalAgreement.abi,
     provider
   );
-  const rental = await contract.rentals(propertyId); // adjust if mapping accessor differs
-  const block = await provider.getBlock("latest");
 
-  if (!block || block.timestamp === undefined) {
-    throw new Error("Failed to fetch current block or timestamp");
-  }
+  const rental = await contract.rentals(propertyId);
+
+  const [
+    _propertyId,
+    _tenant,
+    rentAmount,
+    _depositAmount,
+    lateFee,
+    startDate,
+    rentInterval,
+    _isActive,
+    _createdAt,
+    _terminatedAt,
+  ] = rental;
+
+  const block = await provider.getBlock("latest");
+  const now = block?.timestamp ?? Math.floor(Date.now() / 1000);
+
+  // Compute number of intervals that have passed since startDate
+  const elapsed = now - Number(startDate);
+  const intervalsPassed = Math.floor(elapsed / Number(rentInterval));
+  const nextDueDate =
+    Number(startDate) + intervalsPassed * Number(rentInterval);
+
+  const isLate = now > nextDueDate;
+  const rent = BigInt(rentAmount);
+  const late = isLate ? BigInt(lateFee) : BigInt(0);
+  const totalDue = rent + late;
+  console.log("🧾 Rental Timestamps:");
+  console.log(
+    "Start Date:",
+    Number(startDate),
+    new Date(Number(startDate) * 1000).toISOString()
+  );
+  console.log("Rent Interval (s):", Number(rentInterval));
+  console.log("Current Block Time:", now, new Date(now * 1000).toISOString());
+  console.log(
+    "Rent Due Date (on-chain):",
+    Number(nextDueDate),
+    new Date(Number(nextDueDate) * 1000).toISOString()
+  );
 
   return {
-    due: block.timestamp >= rental.startDate + rental.rentInterval,
-    rental,
-    currentBlockTime: block.timestamp,
-    nextDueDate: rental.startDate + rental.rentInterval,
+    currentBlockTime: now,
+    nextDueDate,
+    isLate,
+    rentAmount: rent,
+    lateFee: late,
+    totalDue,
+    rental: {
+      propertyId: _propertyId,
+      tenant: _tenant,
+      startDate: Number(startDate),
+      rentInterval: Number(rentInterval),
+    },
   };
 };
 
@@ -124,10 +168,36 @@ const payRent = async (propertyId: string) => {
   );
 
   try {
+    const rental = await contract.rentals(propertyId);
+
+    const rentAmount = rental.rentAmount;
+    const lateFee = rental.lateFee;
+    const rentDueDate = Number(rental.rentDueDate);
+
+    // Get current block timestamp
+    const latestBlock = await provider.getBlock("latest");
+    if (!latestBlock || latestBlock.timestamp === undefined) {
+      throw new Error("Failed to fetch current block or timestamp");
+    }
+    const currentTime = Number(latestBlock.timestamp);
+
+    const isLate = currentTime > rentDueDate;
+    const totalDue = isLate ? rentAmount + lateFee : rentAmount;
+
     const tx = await contract.payRent(propertyId, {
-      value: ethers.parseEther("1"), // Rent payment
+      value: totalDue,
     });
-    await tx.wait();
+    const receipt = await tx.wait();
+
+    const paymentTime = new Date(latestBlock.timestamp * 1000).toISOString();
+
+    await supabase.from("payment_history").insert({
+      property_id: propertyId,
+      amount: parseFloat(ethers.formatEther(totalDue)),
+      payment_timestamp: paymentTime,
+      tx_hash: receipt.hash,
+    });
+
     alert("Rent paid successfully!");
   } catch (err) {
     console.error("Payment failed:", err);

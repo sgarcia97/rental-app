@@ -8,6 +8,7 @@ import { getContracts, caDollar } from "@/lib/services";
 import { useAuth } from "@/utils/supabase/context";
 import { redirect } from "next/navigation";
 import moment from "moment";
+import { endRental } from "@/lib/landlordServices";
 import ContractForm from "@/components/contractForm";
 import Loader from "@/components/loader";
 const ActiveListingsPage: NextPage = () => {
@@ -89,20 +90,50 @@ const ActiveListingsPage: NextPage = () => {
               ) : (
                 data.map((listing: any, index: number) => (
                   <tr key={index}>
-                    <td>{caDollar.format(listing.rent_amount)}</td>
-                    <td>{caDollar.format(listing.deposit_amount)}</td>
-                    <td>{caDollar.format(listing.late_fee)}</td>
+                    <td>{listing.rent} ETH</td>
+                    <td>{listing.deposit} ETH</td>
+                    <td>{listing.late_fee} ETH</td>
                     <td>
                       {moment(listing.rent_due_date).format("MMM-D-YYYY")}
                     </td>
                     <td>{listing.rent_interval}</td>
                     <td>{listing.status}</td>
-                    <td>
+                    {/* <td>
                       <button
                         onClick={() => handleContract(listing.property_id)}
                         className="edit-button"
                       >
                         <Image src={Edit} alt="" />
+                      </button>
+                    </td> */}
+                    <td className="flex gap-2">
+                      <button
+                        onClick={() => handleContract(listing.property_id)}
+                        className="edit-button"
+                      >
+                        <Image src={Edit} alt="" />
+                      </button>
+                      <button
+                        onClick={async () => {
+                          const confirmEnd = confirm(
+                            "Are you sure you want to end this contract?"
+                          );
+                          if (!confirmEnd) return;
+
+                          try {
+                            await endRental(listing.property_id);
+                            alert("Contract ended successfully.");
+                            getContracts().then((d) => setData(d)); // refresh table
+                          } catch (err) {
+                            console.error("Failed to end rental:", err);
+                            alert(
+                              "Failed to end rental. See console for details."
+                            );
+                          }
+                        }}
+                        className="button-small"
+                      >
+                        End Contract
                       </button>
                     </td>
                   </tr>

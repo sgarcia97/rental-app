@@ -55,7 +55,7 @@ export default function PropertyPage() {
   };
 
   if (!data) return <Loader />;
-  const property = data[0];
+  const property = data;
   const alreadyExpressed =
     session && property?.prospective_tenant_id === session.user.id;
   const canActivate = property.status === "pending" && alreadyExpressed;
@@ -135,7 +135,7 @@ export default function PropertyPage() {
             </div>
 
             <h3 className="text-xl font-semibold mb-2">
-              Contact: {property.users?.name ?? "No Owner"}
+              Contact: {property.owner?.name ?? "No Owner"}
             </h3>
 
             <form className="space-y-4">

@@ -22,19 +22,26 @@ export const getProperties = async () => {
 
 export const getProperty = async (id: string) => {
   try {
-    const { data: properties, error } = await supabase
+    const { data, error } = await supabase
       .from("properties")
       .select(
-        "*, owner:users!fk_owner(name), prospect:users!fk_prospective_tenant(name)"
+        `
+          *,
+          owner:users!fk_owner(name),
+          prospect:users!fk_prospective_tenant(name)
+        `
       )
-      .eq("property_id", id);
+      .eq("property_id", id)
+      .single(); // auto returns first row
+
     if (error) {
-      console.log(error);
+      console.log("Supabase error:", error);
       return;
     }
-    return properties;
-  } catch (error) {
-    console.log(error);
+
+    return data;
+  } catch (err) {
+    console.log("Fetch error:", err);
   }
 };
 
@@ -86,16 +93,45 @@ export const updateProperty = async (updates: any, id: string) => {
 };
 
 // CONTRACTS
+// export const getContracts = async () => {
+//   try {
+//     const { data: rentals, error } = await supabase.from("rentals").select("*");
+//     if (error) {
+//       console.log(error);
+//       return;
+//     }
+//     return rentals;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 export const getContracts = async () => {
   try {
-    const { data: rentals, error } = await supabase.from("rentals").select("*");
+    const { data, error } = await supabase
+      .from("properties")
+      .select(
+        `
+          property_id,
+          address,
+          rent,
+          deposit,
+          late_fee,
+          rent_interval,
+          status
+        `
+      )
+      .eq("status", "active")
+      .order("address", { ascending: true });
+
     if (error) {
-      console.log(error);
-      return;
+      console.error("Supabase fetch error:", error.message);
+      return [];
     }
-    return rentals;
-  } catch (error) {
-    console.log(error);
+
+    return data;
+  } catch (err) {
+    console.error("Unexpected fetch error:", err);
+    return [];
   }
 };
 

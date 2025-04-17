@@ -3,7 +3,11 @@ import TemplateTenant from "@/components/template-tenant";
 import { useAuth } from "@/utils/supabase/context";
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
-import { getTenantActiveContracts, payRent } from "@/lib/tenantServices";
+import {
+  getTenantActiveContracts,
+  payRent,
+  getRentalStatus,
+} from "@/lib/tenantServices";
 import moment from "moment";
 import { formatEther } from "ethers";
 import { Button } from "@/components/ui/button";
@@ -11,18 +15,53 @@ import { Button } from "@/components/ui/button";
 export default function PayRentPage() {
   const { session } = useAuth();
   const [contracts, setContracts] = useState<any[]>([]);
+  const [statusMap, setStatusMap] = useState<Record<string, any>>({});
 
   useEffect(() => {
     if (!sessionStorage.sess) redirect(`/`);
     if (!session?.user.id) return;
 
-    getTenantActiveContracts(session.user.id).then((res) => {
-      setContracts(res || []);
+    // Load Supabase properties
+    getTenantActiveContracts(session.user.id).then(async (props) => {
+      setContracts(props || []);
+
+      // Fetch status per property
+      const statusResults = await Promise.all(
+        (props || []).map(async (contract: any) => {
+          const status = await getRentalStatus(contract.property_id);
+          return { id: contract.property_id, status };
+        })
+      );
+
+      const map: Record<string, any> = {};
+      statusResults.forEach((entry) => {
+        map[entry.id] = entry.status;
+      });
+      setStatusMap(map);
     });
   }, [session]);
 
   const handlePay = async (propertyId: string) => {
     try {
+      const rentalData = await getRentalStatus(propertyId);
+
+      const now = rentalData.currentBlockTime; // from latest block
+      const { startDate, rentInterval } = rentalData.rental;
+
+      // Calculate the next due date using on-chain time
+      const elapsed = now - Number(startDate);
+      const intervalsPassed = Math.floor(elapsed / Number(rentInterval));
+      const rentDueDate =
+        Number(startDate) + intervalsPassed * Number(rentInterval);
+
+      // Prevent double payment: allow payment only if it's due or late
+      if (now < rentDueDate - rentInterval + 60) {
+        alert(
+          "Rent already paid for this period. Please wait until the next due date."
+        );
+        return;
+      }
+
       await payRent(propertyId);
       alert("Rent paid successfully!");
     } catch (err) {
@@ -39,12 +78,16 @@ export default function PayRentPage() {
         {contracts.length === 0 ? (
           <p>No active rental contracts.</p>
         ) : (
-          contracts.map((contract, i) => {
-            const dueDate = moment(contract.rent_due_date);
-            const isLate = moment().isAfter(dueDate);
-            const rent = contract.rent_amount ?? "0";
-            const lateFee = isLate ? contract.late_fee ?? "0" : "0";
-            const total = (BigInt(rent) + BigInt(lateFee)).toString();
+          contracts.map((contract) => {
+            const status = statusMap[contract.property_id];
+            if (!status) return null;
+
+            const dueDate = moment.unix(status.nextDueDate);
+            const rent = parseFloat(formatEther(status.rentAmount));
+            const lateFee = status.isLate
+              ? parseFloat(formatEther(status.lateFee))
+              : 0;
+            const total = rent + lateFee;
 
             return (
               <div
@@ -58,10 +101,10 @@ export default function PayRentPage() {
                   Due: {dueDate.format("MMM D, YYYY")}
                 </div>
                 <div className="text-sm">
-                  Rent: {formatEther(rent)} ETH <br />
-                  Late Fee: {formatEther(lateFee)} ETH <br />
+                  Rent: {rent.toFixed(2)} ETH <br />
+                  Late Fee: {lateFee.toFixed(2)} ETH <br />
                   <span className="font-semibold">
-                    Total: {formatEther(total)} ETH
+                    Total: {total.toFixed(2)} ETH
                   </span>
                 </div>
                 <div className="mt-2">

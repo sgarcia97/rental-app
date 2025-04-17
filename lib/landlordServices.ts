@@ -80,3 +80,35 @@ export const createRental = async (property: any) => {
     })
     .eq("property_id", property.property_id);
 };
+
+export const endRental = async (propertyId: string) => {
+  const provider = new ethers.BrowserProvider((window as any).ethereum);
+  const signer = await provider.getSigner();
+  const contract = new ethers.Contract(
+    CONTRACT_ADDRESS,
+    RentalAgreement.abi,
+    signer
+  );
+
+  const tx = await contract.endRental(propertyId);
+  return await tx.wait();
+};
+
+export const getOnChainDueDate = async (propertyId: string) => {
+  const provider = new ethers.BrowserProvider((window as any).ethereum);
+  const contract = new ethers.Contract(
+    CONTRACT_ADDRESS,
+    RentalAgreement.abi,
+    provider
+  );
+
+  const rental = await contract.rentals(propertyId);
+  const rentDueDate = Number(rental.rentDueDate);
+
+  console.log(
+    "🕓 On-Chain Rent Due Date:",
+    rentDueDate,
+    new Date(rentDueDate * 1000).toISOString()
+  );
+  return rentDueDate;
+};
