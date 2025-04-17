@@ -38,7 +38,7 @@ export default function Header({ showUsername = false }: HeaderProps) {
             </div>
             <div className="main-menu-links">
               <Link href="/" className={`text-gray-600 hover:underline ${pn == '/' && 'active-link'}`}>Home</Link>
-              <Link href="/listings/all" className={`text-gray-600 hover:underline ${pn == '/listings' && 'active-link'}`}>All listings</Link>
+              <Link href="/listings/all" className={`text-gray-600 hover:underline ${pn == '/listings/all' && 'active-link'}`}>All listings</Link>
             </div>
             <Search/>
           </div>

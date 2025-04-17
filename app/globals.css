@@ -409,6 +409,12 @@ width:300px !important;
   justify-content: space-between;
   align-items:center;
   gap:20px;
+  position:sticky;
+  top:80px;
+  z-index:2;
+  padding:10px;
+  background-color:#ffffff;
+  border-bottom: solid 1px #eaeaea;
 }
 
 .section-header-active{
@@ -428,6 +434,7 @@ width:300px !important;
   border-radius: 5px;
   padding-inline:10px;
   padding-block:2px;
+  font-size:var(--small);
 }
 
 .section-header-section button:hover{

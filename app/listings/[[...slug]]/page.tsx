@@ -46,7 +46,7 @@ const Listings = () => {
     <Template>
         <div className="container mx-auto px-4 py-8">
           <div className="section-header">
-            <span>{val} listings</span>
+            <span>Listings</span>
             <div className="section-header-section">
             <button className={val == 'Calgary' ? 'section-header-active' : ''} onClick={()=>{router.push(`/listings/search/Calgary`)}}>Calgary</button>
             <button className={val == 'Edmonton' ? 'section-header-active' : ''} onClick={()=>{router.push(`/listings/search/Edmonton`)}}>Edmonton</button>
